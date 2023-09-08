@@ -1,7 +1,7 @@
-const searchEngine = 'duckduckgo';
+let searchEngine = 'duckduckgo';
 // const searchEngine = 'google';
 
-const searchBar = document.getElementById('search');
+const searchBar = document.getElementById('search') as HTMLInputElement;
 console.log(searchEngine);
 
 searchBar.onkeydown = e => {
@@ -24,7 +24,7 @@ chrome.bookmarks.search({}, function (items) {
   }
   console.log(source);
 
-  const bookmarks = document.getElementById('bookmarks-container');
+  const bookmarks = document.getElementById('bookmarks-container') as HTMLElement;
 
   source.forEach(item => {
     const node = document.createElement('div');

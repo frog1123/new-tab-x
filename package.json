@@ -1,0 +1,39 @@
+{
+  "name": "new-tab-x",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run ts && npm run sass && npm run icons && npm run manifest && npm run page",
+    "build:final": "npm run build && gulp buildhtml && gulp buildjs && gulp buildcss && npm run icons:final && npm run manifest:final && npm run page:final",
+    "ts:w": "tsc -w",
+    "sass:w": "sass --watch --style=compressed --no-source-map src:dist",
+    "ts": "tsc",
+    "sass": "sass --style=compressed --no-source-map src:dist",
+    "icons": "node scripts/icons.js --destination=dist",
+    "manifest": "node scripts/manifest.js --destination=dist",
+    "page": "node scripts/page.js --destination=dist",
+    "icons:final": "node scripts/icons.js --destination=final",
+    "manifest:final": "node scripts/manifest.js --destination=final",
+    "page:final": "node scripts/page.js --destination=final"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@types/chrome": "^0.0.200",
+    "@types/node": "^18.11.7",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-minify": "^3.1.0",
+    "sass": "^1.55.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "chalk": "4.1.2"
+  }
+}
