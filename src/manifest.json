@@ -4,7 +4,7 @@
   "name": "new tab x",
   "author": "frog1123",
   "description": "new tab x",
-  "permissions": ["storage"],
+  "permissions": ["storage", "bookmarks"],
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
