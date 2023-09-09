@@ -1,29 +1,93 @@
+* {
+  transition-duration: 250ms;
+}
+
 #html,
 body {
   height: 100vh;
   padding: 0;
   margin: 0;
   backdrop-filter: brightness(40%);
-  background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F07%2F4k-amazing-sky-wallpaper-free.jpg&f=1&nofb=1&ipt=434eca6b54a5b6e4cea38a9e1ed3067ef8968cc0f1ce42db21dec6844552a033&ipo=images');
-  background-size: 100% 100%;
+  background-image: url('https://source.unsplash.com/E8Ufcyxz514/2400x1823');
+  background-size: cover;
+  background-position: center;
+  object-fit: cover;
+  background-repeat: no-repeat;
+  padding-bottom: 60px;
 
   /* background-image: linear-gradient(45deg, #d9ed92 0%, #b5e48c 100%);
   background-image: -webkit-linear-gradient(45deg, #d9ed92 0%, #b5e48c 100%);
   background-image: -moz-linear-gradient(45deg, #d9ed92 0%, #b5e48c 100%); */
 }
 
+$border-radius: 10px;
+
 @mixin glass {
-  background: rgba(255, 255, 255, 0.31);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  box-sizing: border-box !important;
+
+  // border: 1px solid rgba(255, 255, 255, 0.25);
+  // border-radius: 20px;
+  // background-color: rgba(255, 255, 255, 0.45);
+  // box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+
+  // backdrop-filter: blur(1000px);
+  // -webkit-backdrop-filter: blur(10000px);
+
+  // box-sizing: border-box !important;
+
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+input[type='checkbox'] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+label {
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 56px;
+  height: 28px;
+  background: #111111;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+
+label:after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 23px;
+  height: 23px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+input:checked + label {
+  background: #aa74e0;
+}
+
+input:checked + label:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+label:active:after {
+  width: 30px;
 }
 
 #search {
   height: 35px;
-  width: 500px;
-  border-radius: 10px;
+  width: inherit;
+  border-radius: $border-radius;
   text-align: center;
   font-size: 20px;
   outline: none;
@@ -33,34 +97,66 @@ body {
 
   &::placeholder {
     color: rgba(255, 255, 255, 0.5);
+    filter: blur(0px);
   }
 }
 
 #container {
+  padding-top: 50vh;
+  width: 500px;
+  margin: auto;
   display: grid;
-  place-items: center;
-  height: 100%;
+  grid-auto-flow: row;
+  gap: 10px;
+
+  @media screen and (max-width: 600px) {
+    width: 75vw;
+    padding-top: 20vh;
+  }
 }
 
 #bookmarks-container {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 10px;
+  @include glass;
+  width: inherit;
+  padding: 6px;
+  border-radius: $border-radius;
+
+  & #bookmarks-info {
+    display: grid;
+    grid-template-columns: max-content auto;
+
+    & #bookmarks-new-tab-info {
+      margin-left: auto;
+      display: grid;
+      grid-auto-flow: column;
+    }
+  }
+
+  & #bookmarks-grid {
+    display: grid;
+    grid-auto-flow: column;
+    max-width: 100%;
+    gap: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .bookmark {
   display: grid;
   color: white;
-  grid-template-rows: 50px 15px;
+  grid-template-rows: 30px 15px;
   width: 65px;
   place-items: center;
   border-radius: 10px;
-  @include glass;
   padding: 6px;
 
+  cursor: pointer;
+
   & img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
 
   & p {
@@ -69,5 +165,6 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    text-align: center;
   }
 }

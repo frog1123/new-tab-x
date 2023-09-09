@@ -1,4 +1,5 @@
 let searchEngine = 'duckduckgo';
+let openBookmarkInNewTab = false;
 // const searchEngine = 'google';
 
 const searchBar = document.getElementById('search') as HTMLInputElement;
@@ -17,6 +18,13 @@ searchBar.onkeydown = e => {
   }
 };
 
+const bookmarksNewTabToggle = document.getElementById('bookmarks-new-tab-toggle') as any;
+
+bookmarksNewTabToggle.onclick = () => {
+  openBookmarkInNewTab = !openBookmarkInNewTab;
+  console.log(openBookmarkInNewTab);
+};
+
 chrome.bookmarks.search({}, function (items) {
   const source = [];
   for (var i = 0; i < items.length; i++) {
@@ -24,7 +32,7 @@ chrome.bookmarks.search({}, function (items) {
   }
   console.log(source);
 
-  const bookmarks = document.getElementById('bookmarks-container') as HTMLElement;
+  const bookmarks = document.getElementById('bookmarks-grid') as HTMLElement;
 
   source.forEach(item => {
     const node = document.createElement('div');
@@ -41,6 +49,12 @@ chrome.bookmarks.search({}, function (items) {
 
     node.appendChild(img);
     node.appendChild(p);
+
+    node.onclick = () => {
+      if (openBookmarkInNewTab === true) window.open(item.url, '_blank');
+      else window.open(item.url, '_self');
+    };
+
     bookmarks.append(node);
   });
 });
