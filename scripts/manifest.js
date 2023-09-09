@@ -43,7 +43,7 @@ const config = {
 const createManifest = async config => {
   try {
     writeFileSync(join(__dirname, '..', destination, 'manifest.json'), JSON.stringify(config));
-    console.log(`${chalk.green('✔')} created mainfest.json`);
+    console.log(`${chalk.green('✔')} created manifest.json`);
   } catch (err) {
     console.log(err);
     console.log(`${chalk.red('✘')} failed to create manifest.json`);

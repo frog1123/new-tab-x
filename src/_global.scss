@@ -1,0 +1,39 @@
+$border-radius: 10px;
+
+* {
+  transition-duration: 250ms;
+}
+
+body {
+  height: 100vh;
+  padding-bottom: 30px;
+  margin: 0;
+
+  color: #224;
+  background: url(https://source.unsplash.com/E8Ufcyxz514/2400x1823) center / cover no-repeat fixed;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #00000000;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background: linear-gradient(to top, #ffffff 0%, #ffffff 100%);
+  background: -webkit-linear-gradient(to top, #ffffff 0%, #ffffff 100%);
+  background: -moz-linear-gradient(to top, #ffffff 0%, #ffffff 100%);
+}
+
+@mixin glass {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box !important;
+
+  backdrop-filter: blur(100px);
+}
