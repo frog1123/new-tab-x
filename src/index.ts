@@ -18,7 +18,7 @@ searchBar.onkeydown = e => {
 };
 
 chrome.bookmarks.search({}, function (items) {
-  var source = [];
+  const source = [];
   for (var i = 0; i < items.length; i++) {
     source[i] = items[i];
   }
@@ -32,8 +32,14 @@ chrome.bookmarks.search({}, function (items) {
     nodeClass.value = 'bookmark';
     node.setAttributeNode(nodeClass);
     const p = document.createElement('p');
-    p.textContent = `${item.title} ${item.url}`;
+    const img = document.createElement('img');
+    const imgSrc = document.createAttribute('src');
+    imgSrc.value = `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(item.url as string)}&size=${32}`;
+    img.setAttributeNode(imgSrc);
 
+    p.textContent = `${item.title}`;
+
+    node.appendChild(img);
     node.appendChild(p);
     bookmarks.append(node);
   });

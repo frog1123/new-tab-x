@@ -7,10 +7,10 @@ const destination = process.argv[2].replace(/--destination=/, '');
 const config = {
   manifest_version: 3,
   version: '1.0.0',
-  name: 'new tab x',
+  name: `new tab x ${destination === 'final' ? '' : '(dev)'}`,
   author: 'frog1123',
   description: 'new tab x',
-  permissions: ['storage', 'bookmarks'],
+  permissions: ['storage', 'bookmarks', 'favicon'],
   chrome_url_overrides: {
     newtab: 'index.html'
   },
