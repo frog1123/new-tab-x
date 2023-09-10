@@ -1,4 +1,5 @@
 globalThis.settings = {
+  preferredTitle: 'new tab x',
   searchEngine: 'duckduckgo',
   openBookmarkInNewTab: false,
   bgUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fw.wallha.com%2Fws%2F12%2FfTuSFKV5.jpg&f=1&nofb=1&ipt=5617fa993ab28721ff615c23dab1f0981f9dafe4f2713821bc76b5477028fccf&ipo=images',
@@ -8,22 +9,23 @@ globalThis.settings = {
 chrome.storage.sync.get(globalThis.settings, async items => {
   console.log(items);
 
+  document.title = items.preferredTitle;
   (document.querySelector('body') as HTMLElement).style.background = `url(${items.bgUrl}) center / cover no-repeat fixed`;
 
   const container = document.getElementById('container') as HTMLDivElement;
   items.order.forEach((type: string) => {
     switch (type) {
       case 'time': {
-        container.innerHTML = `${container.innerHTML}<h1 id="main-text"></h1>`;
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el"></h1>`;
         break;
       }
       case 'search': {
-        container.innerHTML = `${container.innerHTML}<input id="search" placeholder="search" autocomplete="off">`;
+        container.innerHTML = `${container.innerHTML}<input id="search" class="hidden-el" placeholder="search" autocomplete="off">`;
         break;
       }
       case 'bookmarks': {
         container.innerHTML = `${container.innerHTML}
-        <div id="bookmarks-container">
+        <div id="bookmarks-container" class="hidden-el">
           <div id="bookmarks-info">
             <div> 
               <p>Bookmarks |&nbsp;</p>
@@ -119,4 +121,15 @@ chrome.storage.sync.get(globalThis.settings, async items => {
       bookmarks.append(node);
     });
   });
+
+  const hiddenElements = document.querySelectorAll('.hidden-el');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible-el');
+      else entry.target.classList.remove('visible-el');
+    });
+  });
+
+  hiddenElements.forEach(el => observer.observe(el));
 });
