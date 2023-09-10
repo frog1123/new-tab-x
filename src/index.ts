@@ -1,7 +1,8 @@
 const settings = {
   searchEngine: 'duckduckgo',
   openBookmarkInNewTab: false,
-  bgUrl: 'https://source.unsplash.com/E8Ufcyxz514/2400x1823'
+  bgUrl: 'https://source.unsplash.com/E8Ufcyxz514/2400x1823',
+  order: ['time', 'search', 'bookmarks']
 };
 
 chrome.storage.sync.get(settings, async items => {
@@ -9,8 +10,36 @@ chrome.storage.sync.get(settings, async items => {
 
   (document.querySelector('body') as HTMLElement).style.background = `url(${items.bgUrl}) center / cover no-repeat fixed`;
 
-  const mainText = document.getElementById('main-text') as HTMLElement;
+  const container = document.getElementById('container') as HTMLDivElement;
+  items.order.forEach((type: string) => {
+    switch (type) {
+      case 'time': {
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text"></h1>`;
+        break;
+      }
+      case 'search': {
+        container.innerHTML = `${container.innerHTML}<input id="search" placeholder="search" autocomplete="off">`;
+        break;
+      }
+      case 'bookmarks': {
+        container.innerHTML = `${container.innerHTML}
+        <div id="bookmarks-container">
+          <div id="bookmarks-info">
+            <p>bookmarks</p>
+            <div id="bookmarks-new-tab-info">
+              <p>open in new tab</p>
+              <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
+              <label for="bookmarks-new-tab-toggle"></label>
+            </div>
+          </div>
+          <div id="bookmarks-grid"></div>
+        </div>`;
+        break;
+      }
+    }
+  });
 
+  const mainText = document.getElementById('main-text') as HTMLElement;
   setInterval(() => {
     const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const d = new Date();
