@@ -36,8 +36,10 @@ const config = {
       64: '64.png',
       128: '128.png'
     },
-    default_title: 'new tab x'
-  }
+    default_title: 'new tab x',
+    default_popup: 'popup.html'
+  },
+  options_page: 'options.html'
 };
 
 const createManifest = async config => {

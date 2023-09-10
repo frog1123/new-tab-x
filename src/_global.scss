@@ -6,11 +6,11 @@ $border-radius: 10px;
 
 body {
   height: 100vh;
-  padding-bottom: 30px;
   margin: 0;
 
   color: #224;
-  background: url(https://source.unsplash.com/E8Ufcyxz514/2400x1823) center / cover no-repeat fixed;
+  transition-duration: 0ms;
+  background-color: #808080;
 }
 
 ::-webkit-scrollbar {
@@ -29,11 +29,11 @@ body {
 }
 
 @mixin glass {
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.45);
-  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 23px rgba(0, 0, 0, 0.15);
   box-sizing: border-box !important;
 
-  backdrop-filter: blur(100px);
+  backdrop-filter: blur(10px);
 }

@@ -1,17 +1,11 @@
 @import './global';
 
-.card {
-  @include glass;
-
-  max-width: 300px;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  max-width: 500px;
-  height: 300px;
-  padding: 35px;
+#main-text {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  color: #fff;
 }
 
 input[type='checkbox'] {
@@ -74,7 +68,7 @@ label:active:after {
 }
 
 #container {
-  padding-top: 50vh;
+  padding-top: 30vh;
   width: 500px;
   margin: auto;
   display: grid;

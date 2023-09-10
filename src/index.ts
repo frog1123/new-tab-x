@@ -1,10 +1,28 @@
 const settings = {
   searchEngine: 'duckduckgo',
-  openBookmarkInNewTab: false
+  openBookmarkInNewTab: false,
+  bgUrl: 'https://source.unsplash.com/E8Ufcyxz514/2400x1823'
 };
 
 chrome.storage.sync.get(settings, async items => {
   console.log(items);
+
+  (document.querySelector('body') as HTMLElement).style.background = `url(${items.bgUrl}) center / cover no-repeat fixed`;
+
+  const mainText = document.getElementById('main-text') as HTMLElement;
+
+  setInterval(() => {
+    const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const d = new Date();
+    let day = weekday[d.getDay()];
+
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    mainText.textContent = `${day} ${hours}:${minutes}:${seconds}`;
+  }, 100);
 
   const searchBar = document.getElementById('search') as HTMLInputElement;
 

@@ -4,15 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
   <script src="index.js" defer></script>
-  <link rel="stylesheet" type="text/css" href="styles.css" />
-  <title>new tab</title>
+  <title>Document</title>
 </head>
 
 <body>
   <div id="container">
+    <h1 id="main-text"></h1>
     <input id="search" placeholder="search" autocomplete="off">
-    <div id="bookmarks-container"></div>
+    <div id="bookmarks-container">
+      <div id="bookmarks-info">
+        <p>bookmarks</p>
+        <div id="bookmarks-new-tab-info">
+          <p>open in new tab</p>
+          <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
+          <label for="bookmarks-new-tab-toggle"></label>
+        </div>
+      </div>
+      <div id="bookmarks-grid"></div>
+    </div>
   </div>
 </body>
 
