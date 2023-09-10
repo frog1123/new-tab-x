@@ -1,7 +1,7 @@
 globalThis.settings = {
   searchEngine: 'duckduckgo',
   openBookmarkInNewTab: false,
-  bgUrl: 'https://source.unsplash.com/E8Ufcyxz514/2400x1823',
+  bgUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fw.wallha.com%2Fws%2F12%2FfTuSFKV5.jpg&f=1&nofb=1&ipt=5617fa993ab28721ff615c23dab1f0981f9dafe4f2713821bc76b5477028fccf&ipo=images',
   order: ['time', 'search', 'bookmarks']
 };
 
@@ -25,9 +25,13 @@ chrome.storage.sync.get(globalThis.settings, async items => {
         container.innerHTML = `${container.innerHTML}
         <div id="bookmarks-container">
           <div id="bookmarks-info">
-            <p>bookmarks</p>
+            <div> 
+              <p>Bookmarks |&nbsp;</p>
+              <img src="up_arrow.svg" />
+              <p>&nbsp;SHIFT + scroll</p>
+            </div>
             <div id="bookmarks-new-tab-info">
-              <p>open in new tab</p>
+              <p>Open in new tab</p>
               <label class="switch">
                 <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
                 <span class="slider"></span>
