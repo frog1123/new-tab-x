@@ -1,11 +1,11 @@
-const settings = {
+globalThis.settings = {
   searchEngine: 'duckduckgo',
   openBookmarkInNewTab: false,
   bgUrl: 'https://source.unsplash.com/E8Ufcyxz514/2400x1823',
   order: ['time', 'search', 'bookmarks']
 };
 
-chrome.storage.sync.get(settings, async items => {
+chrome.storage.sync.get(globalThis.settings, async items => {
   console.log(items);
 
   (document.querySelector('body') as HTMLElement).style.background = `url(${items.bgUrl}) center / cover no-repeat fixed`;
@@ -28,12 +28,14 @@ chrome.storage.sync.get(settings, async items => {
             <p>bookmarks</p>
             <div id="bookmarks-new-tab-info">
               <p>open in new tab</p>
-              <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
-              <label for="bookmarks-new-tab-toggle"></label>
+              <label class="switch">
+                <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
+                <span class="slider"></span>
+              </label>
             </div>
           </div>
           <div id="bookmarks-grid"></div>
-        </div>`;
+      </div>`;
         break;
       }
     }
@@ -72,7 +74,11 @@ chrome.storage.sync.get(settings, async items => {
   bookmarksNewTabToggle.checked = items.openBookmarkInNewTab;
 
   bookmarksNewTabToggle.onclick = () => {
-    chrome.storage.sync.set({ openBookmarkInNewTab: !items.openBookmarkInNewTab }, () => {});
+    chrome.storage.sync.get(globalThis.settings, items => {
+      chrome.storage.sync.set({ openBookmarkInNewTab: !items.openBookmarkInNewTab }, () => {});
+
+      console.log('test', items.openBookmarkInNewTab);
+    });
   };
 
   chrome.bookmarks.search({}, function (bookmarkItems) {
@@ -100,8 +106,10 @@ chrome.storage.sync.get(settings, async items => {
       node.appendChild(p);
 
       node.onclick = () => {
-        if (items.openBookmarkInNewTab === true) window.open(item.url, '_blank');
-        else window.open(item.url, '_self');
+        chrome.storage.sync.get(globalThis.settings, items => {
+          if (items.openBookmarkInNewTab === true) window.open(item.url, '_blank');
+          else window.open(item.url, '_self');
+        });
       };
 
       bookmarks.append(node);
