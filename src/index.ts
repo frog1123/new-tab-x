@@ -1,8 +1,10 @@
 globalThis.settings = {
   preferredTitle: 'new tab x',
   searchEngine: 'duckduckgo',
+  militaryTime: false,
   openBookmarkInNewTab: false,
-  bgUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fw.wallha.com%2Fws%2F12%2FfTuSFKV5.jpg&f=1&nofb=1&ipt=5617fa993ab28721ff615c23dab1f0981f9dafe4f2713821bc76b5477028fccf&ipo=images',
+  bgUrl:
+    'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images',
   order: ['time', 'search', 'bookmarks']
 };
 
@@ -58,7 +60,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    mainText.textContent = `${day} ${hours}:${minutes}:${seconds}`;
+    mainText.textContent = `${day} ${items.militaryTime === false ? parseInt(hours) % 12 : hours}:${minutes}:${seconds} ${items.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''}`;
   }, 100);
 
   const searchBar = document.getElementById('search') as HTMLInputElement;
