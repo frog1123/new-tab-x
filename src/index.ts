@@ -3,19 +3,59 @@ globalThis.settings = {
   searchEngine: 'duckduckgo',
   militaryTime: false,
   openBookmarkInNewTab: false,
+  notesValue: '',
   bgUrl:
     'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images',
-  order: ['time', 'search', 'bookmarks']
+  order: ['time', 'search', 'bookmarks', ['notes', 'weather']]
 };
 
+// https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
+
 chrome.storage.sync.get(globalThis.settings, async items => {
-  console.log(items);
+  console.log('%c👁️| new tab x enabled %cv2\n%c', 'color: #a533e8', 'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;', '');
+  console.table(items);
 
   document.title = items.preferredTitle;
   (document.querySelector('body') as HTMLElement).style.background = `url(${items.bgUrl}) center / cover no-repeat fixed`;
 
   const container = document.getElementById('container') as HTMLDivElement;
-  items.order.forEach((type: string) => {
+  items.order.forEach((type: string | [string, string], index: number) => {
+    if (type instanceof Array) {
+      container.innerHTML = `${container.innerHTML}<div id="d${index}-container" class="double-container"></div>`;
+      const dContainer = document.getElementById(`d${index}-container`);
+
+      type.forEach(type => {
+        switch (type) {
+          case 'notes': {
+            dContainer!.innerHTML = `${dContainer!.innerHTML}
+            <div id="notes">
+              <p>Notes</p>
+              <input id="notes-input" />
+            </div>`;
+
+            chrome.storage.sync.get(globalThis.settings, items => {
+              (document.getElementById('notes-input') as HTMLInputElement).value = items.notesValue;
+            });
+            break;
+          }
+          case 'weather': {
+            dContainer!.innerHTML = `${dContainer!.innerHTML}
+            <div id="weather">
+              <p>Weather</p>
+            </div>`;
+
+            const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m';
+
+            fetch(apiUrl)
+              .then(res => res.json())
+              .then(data => console.log(data));
+            break;
+          }
+        }
+      });
+
+      return;
+    }
     switch (type) {
       case 'time': {
         container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el"></h1>`;
@@ -43,7 +83,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
             </div>
           </div>
           <div id="bookmarks-grid"></div>
-      </div>`;
+        </div>`;
         break;
       }
     }
@@ -84,8 +124,6 @@ chrome.storage.sync.get(globalThis.settings, async items => {
   bookmarksNewTabToggle.onclick = () => {
     chrome.storage.sync.get(globalThis.settings, items => {
       chrome.storage.sync.set({ openBookmarkInNewTab: !items.openBookmarkInNewTab }, () => {});
-
-      console.log('test', items.openBookmarkInNewTab);
     });
   };
 
@@ -123,6 +161,16 @@ chrome.storage.sync.get(globalThis.settings, async items => {
       bookmarks.append(node);
     });
   });
+
+  const notesInput = document.getElementById('notes-input') as HTMLInputElement;
+
+  if (notesInput) {
+    notesInput.oninput = () => {
+      console.log(notesInput.value);
+
+      chrome.storage.sync.set({ notesValue: notesInput.value }, () => {});
+    };
+  }
 
   const hiddenElements = document.querySelectorAll('.hidden-el');
 

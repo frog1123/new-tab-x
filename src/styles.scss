@@ -153,7 +153,6 @@ input:checked + .slider:before {
   gap: 4px;
   width: 65px;
   place-items: center;
-  border-radius: 10px;
   padding: 6px;
 
   cursor: pointer;
@@ -171,5 +170,19 @@ input:checked + .slider:before {
     white-space: nowrap;
     text-align: center;
     margin: 0;
+  }
+}
+
+.double-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  box-sizing: border-box !important;
+
+  & div {
+    @include glass;
+
+    height: 100px;
+    border-radius: $border-radius;
   }
 }

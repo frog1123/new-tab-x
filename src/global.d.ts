@@ -4,8 +4,9 @@ declare global {
     searchEngine: 'google' | 'duckduckgo';
     militaryTime: boolean;
     openBookmarkInNewTab: boolean;
+    notesValue: string;
     bgUrl: string;
-    order: string[];
+    order: (string | [string, string])[];
   };
 }
 
