@@ -3,7 +3,7 @@
   <h1>new tab x</h1>
 </div>
 
-not on chrome webstore
+not on chrome webstore yet
 
 <div align="center">
   
