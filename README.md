@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/logo.svg" />
+  <img src="./assets/logo.svg" width="128px" height="128px" />
   <h1>new tab x</h1>
 </div>
 
