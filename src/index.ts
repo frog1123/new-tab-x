@@ -4,12 +4,12 @@ globalThis.settings = {
   militaryTime: false,
   openBookmarkInNewTab: false,
   notesValue: '',
-  bgUrl:
-    'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images',
+  bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
   order: ['time', 'search', 'bookmarks', ['notes', 'weather']]
 };
 
 // https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
+// https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images
 
 chrome.storage.sync.get(globalThis.settings, async items => {
   console.log('%c👁️| new tab enabled %cx\n%c', 'color: #a533e8', 'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;', '');
