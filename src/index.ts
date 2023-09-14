@@ -12,7 +12,7 @@ globalThis.settings = {
 // https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
 
 chrome.storage.sync.get(globalThis.settings, async items => {
-  console.log('%c👁️| new tab x enabled %cv2\n%c', 'color: #a533e8', 'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;', '');
+  console.log('%c👁️| new tab enabled %cx\n%c', 'color: #a533e8', 'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;', '');
   console.table(items);
 
   document.title = items.preferredTitle;
@@ -28,27 +28,62 @@ chrome.storage.sync.get(globalThis.settings, async items => {
         switch (type) {
           case 'notes': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="notes">
+            <div id="notes" class="double-child">
               <p>Notes</p>
-              <input id="notes-input" />
+              <textarea id="notes-input"></textarea>
             </div>`;
 
             chrome.storage.sync.get(globalThis.settings, items => {
-              (document.getElementById('notes-input') as HTMLInputElement).value = items.notesValue;
+              (document.getElementById('notes-input') as HTMLTextAreaElement).value = items.notesValue;
             });
             break;
           }
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="weather">
-              <p>Weather</p>
+            <div id="weather" class="double-child">
+              <div id="weather-grid"></div>
             </div>`;
 
-            const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m';
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${40.73061}&longitude=${-73.935242}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation,rain,cloudcover`;
 
             fetch(apiUrl)
               .then(res => res.json())
-              .then(data => console.log(data));
+              .then(data => {
+                console.log(data);
+
+                const loactionApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${data.latitude}&lon=${data.longitude}`;
+                fetch(loactionApiUrl)
+                  .then(response => response.json())
+                  .then(data => {
+                    console.log(data);
+                    const location = `${data.address.city}, ${data.address.country}`;
+                    const weatherContainer = document.getElementById('weather') as HTMLDivElement;
+                    weatherContainer!.innerHTML = `${weatherContainer!.innerHTML}<p id="weather-info">Weather | ${location}</p>`;
+                  });
+
+                const getAverages = (data: any[]) => {
+                  let avgArr = [];
+                  for (let i = 0; i < 7; i += 1) {
+                    const first24 = data.slice(i * 24, i * 24 + 24);
+                    const avgSum = first24.reduce((a: any, b: any) => a + b, 0);
+                    const average = (avgSum / 24).toFixed(0);
+                    avgArr[avgArr.length] = average;
+                  }
+                  return avgArr;
+                };
+
+                const temps: string[] = getAverages(data.hourly.temperature_2m);
+                const windspeeds: string[] = getAverages(data.hourly.windspeed_10m);
+
+                temps.forEach((temp, index) => {
+                  const weatherGrid = document.getElementById('weather-grid') as HTMLDivElement;
+                  weatherGrid.innerHTML = `${weatherGrid.innerHTML}
+                  <div>
+                    <p class="weather-emoji">${parseFloat(windspeeds[index]) > 10 ? '🍃' : '☀️'}</p>
+                    <p>${temp}°</p>
+                  </div>`;
+                });
+              });
             break;
           }
         }
@@ -165,11 +200,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
   const notesInput = document.getElementById('notes-input') as HTMLInputElement;
 
   if (notesInput) {
-    notesInput.oninput = () => {
-      console.log(notesInput.value);
-
-      chrome.storage.sync.set({ notesValue: notesInput.value }, () => {});
-    };
+    notesInput.oninput = () => chrome.storage.sync.set({ notesValue: notesInput.value }, () => {});
   }
 
   const hiddenElements = document.querySelectorAll('.hidden-el');
