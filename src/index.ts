@@ -76,6 +76,8 @@ chrome.storage.sync.get(globalThis.settings, async items => {
 
                 const temps: string[] = getAverages(data.hourly.temperature_2m);
                 const windspeeds: string[] = getAverages(data.hourly.windspeed_10m);
+                const rains: string[] = getAverages(data.hourly.rain);
+                const cloudcovers: string[] = getAverages(data.hourly.cloudcover);
 
                 temps.forEach((temp, index) => {
                   const weatherGrid = document.getElementById('weather-grid') as HTMLDivElement;
