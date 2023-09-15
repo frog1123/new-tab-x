@@ -1,25 +1,35 @@
 globalThis.settings = {
-  preferredTitle: 'new tab x',
-  searchEngine: 'duckduckgo',
-  militaryTime: false,
-  openBookmarkInNewTab: false,
-  notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀',
-  bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
-  order: ['time', 'search', 'bookmarks', ['notes', 'weather']]
+  general: {
+    preferredTitle: 'new tab x',
+    bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
+    order: ['time', 'search', 'bookmarks', ['notes', 'weather']]
+  },
+  mainText: {
+    militaryTime: false
+  },
+  searchBar: {
+    searchEngine: 'duckduckgo'
+  },
+  bookmarksWidget: {
+    openBookmarkInNewTab: true
+  },
+  notesWidget: {
+    notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
+  }
 };
 
 // https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
 // https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images
 
-chrome.storage.sync.get(globalThis.settings, async items => {
+chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async items => {
   console.log('%c👁️| new tab enabled %cx\n%c', 'color: #a533e8', 'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;', '');
   console.table(items);
 
-  document.title = items.preferredTitle;
-  (document.querySelector('body') as HTMLElement).style.background = `url(${items.bgUrl}) center / cover no-repeat fixed`;
+  document.title = items.general.preferredTitle;
+  (document.querySelector('body') as HTMLElement).style.background = `url(${items.general.bgUrl}) center / cover no-repeat fixed`;
 
   const container = document.getElementById('container') as HTMLDivElement;
-  items.order.forEach((type: string | [string, string], index: number) => {
+  items.general.order.forEach((type: string | [string, string], index: number) => {
     if (type instanceof Array) {
       container.innerHTML = `${container.innerHTML}<div id="d${index}-container" class="double-container"></div>`;
       const dContainer = document.getElementById(`d${index}-container`);
@@ -74,17 +84,23 @@ chrome.storage.sync.get(globalThis.settings, async items => {
                   return avgArr;
                 };
 
+                const days = [0, 1, 2, 3, 4, 5, 6];
                 const temps: string[] = getAverages(data.hourly.temperature_2m);
                 const windspeeds: string[] = getAverages(data.hourly.windspeed_10m);
                 const rains: string[] = getAverages(data.hourly.rain);
                 const cloudcovers: string[] = getAverages(data.hourly.cloudcover);
 
-                temps.forEach((temp, index) => {
+                days.forEach(day => {
+                  let emoji = '☀️';
+                  if (parseFloat(windspeeds[day]) > 10) emoji = '🍃';
+                  if (parseFloat(cloudcovers[day]) > 80) emoji = '☁️';
+                  if (parseFloat(rains[day]) > 10) emoji = '🌧️';
+
                   const weatherGrid = document.getElementById('weather-grid') as HTMLDivElement;
                   weatherGrid.innerHTML = `${weatherGrid.innerHTML}
                   <div>
-                    <p class="weather-emoji">${parseFloat(windspeeds[index]) > 10 ? '🍃' : '☀️'}</p>
-                    <p>${temp}°</p>
+                    <p class="weather-emoji">${emoji}</p>
+                    <p>${temps[day]}°</p>
                   </div>`;
                 });
               });
@@ -139,14 +155,16 @@ chrome.storage.sync.get(globalThis.settings, async items => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    mainText.textContent = `${day} ${items.militaryTime === false ? parseInt(hours) % 12 : hours}:${minutes}:${seconds} ${items.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''}`;
+    mainText.textContent = `${day} ${items.mainText.militaryTime === false ? parseInt(hours) % 12 : hours}:${minutes}:${seconds} ${
+      items.mainText.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''
+    }`;
   }, 100);
 
   const searchBar = document.getElementById('search') as HTMLInputElement;
 
   searchBar.onkeydown = e => {
     if (e.key === 'Enter') {
-      switch (items.searchEngine) {
+      switch (items.searchBar.searchEngine) {
         case 'duckduckgo':
           window.location.replace(`https://duckduckgo.com/?q=${searchBar.value}`);
           break;
@@ -158,7 +176,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
   };
 
   const bookmarksNewTabToggle = document.getElementById('bookmarks-new-tab-toggle') as any;
-  bookmarksNewTabToggle.checked = items.openBookmarkInNewTab;
+  bookmarksNewTabToggle.checked = items.bookmarksWidget.openBookmarkInNewTab;
 
   bookmarksNewTabToggle.onclick = () => {
     chrome.storage.sync.get(globalThis.settings, items => {
