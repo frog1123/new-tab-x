@@ -3,7 +3,7 @@ globalThis.settings = {
   searchEngine: 'duckduckgo',
   militaryTime: false,
   openBookmarkInNewTab: false,
-  notesValue: '',
+  notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀',
   bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
   order: ['time', 'search', 'bookmarks', ['notes', 'weather']]
 };
@@ -28,7 +28,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
         switch (type) {
           case 'notes': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="notes" class="double-child">
+            <div id="notes" class="double-child hidden-el">
               <p>Notes</p>
               <textarea id="notes-input"></textarea>
             </div>`;
@@ -40,7 +40,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
           }
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="weather" class="double-child">
+            <div id="weather" class="double-child hidden-el">
               <div id="weather-grid"></div>
             </div>`;
 
