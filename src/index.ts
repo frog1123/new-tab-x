@@ -41,6 +41,7 @@ chrome.storage.sync.get(globalThis.settings, async items => {
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
             <div id="weather" class="double-child hidden-el">
+              <p id="weather-info">...</p>
               <div id="weather-grid"></div>
             </div>`;
 
@@ -57,8 +58,9 @@ chrome.storage.sync.get(globalThis.settings, async items => {
                   .then(data => {
                     console.log(data);
                     const location = `${data.address.city}, ${data.address.country}`;
-                    const weatherContainer = document.getElementById('weather') as HTMLDivElement;
-                    weatherContainer!.innerHTML = `${weatherContainer!.innerHTML}<p id="weather-info">Weather | ${location}</p>`;
+
+                    const weatherInfo = document.getElementById('weather-info') as HTMLParagraphElement;
+                    weatherInfo!.innerHTML = `Weather | ${location}`;
                   });
 
                 const getAverages = (data: any[]) => {

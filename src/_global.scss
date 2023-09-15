@@ -1,9 +1,12 @@
 $border-radius: 10px;
+$font-size: 12px;
+$font-size-sm: 10px;
 
 * {
   transition-duration: 250ms;
 }
 
+html,
 body {
   height: 100vh;
   margin: 0;
