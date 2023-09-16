@@ -1,5 +1,29 @@
 @import './global';
 
+#container {
+  padding-top: 30vh;
+  width: 500px;
+  margin: auto;
+  display: grid;
+  grid-auto-flow: row;
+  gap: 6px;
+
+  @media screen and (max-width: 600px) {
+    width: 75vw;
+    padding-top: 20vh;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 90vw;
+    padding-top: 20vh;
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 95vw;
+    padding-top: 20vh;
+  }
+}
+
 #main-text {
   margin: 0;
   width: 100%;
@@ -71,14 +95,6 @@
   }
 }
 
-input:checked + .slider {
-  background-color: #2196f3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
-}
-
 input:checked + .slider:before {
   -webkit-transform: translateX(13px);
   -ms-transform: translateX(13px);
@@ -109,25 +125,6 @@ input:checked + .slider:before {
 
   @media screen and (max-width: 600px) {
     font-size: 14px;
-  }
-}
-
-#container {
-  padding-top: 30vh;
-  width: 500px;
-  margin: auto;
-  display: grid;
-  grid-auto-flow: row;
-  gap: 6px;
-
-  @media screen and (max-width: 600px) {
-    width: 75vw;
-    padding-top: 20vh;
-  }
-
-  @media screen and (max-width: 400px) {
-    width: 95vw;
-    padding-top: 20vh;
   }
 }
 

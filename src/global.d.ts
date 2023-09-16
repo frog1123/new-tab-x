@@ -1,11 +1,14 @@
 declare global {
-  var settings: {
+  type NewTabSettings = {
     general: {
+      debugMode: boolean;
       preferredTitle: string;
       bgUrl: string;
+      accentColor: string;
       order: (string | [string, string])[];
     };
     mainText: {
+      font: 'Arial, sans-serif' | 'Monaco, monospace';
       militaryTime: boolean;
     };
     searchBar: {
@@ -18,6 +21,8 @@ declare global {
       notesValue: string;
     };
   };
+
+  var settings: NewTabSettings;
 }
 
 export {};

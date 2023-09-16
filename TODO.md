@@ -1,4 +1,2 @@
 - improve settings page
 - add more customizability
-- improve weather widget
-- add custom fonts
