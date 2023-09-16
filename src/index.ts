@@ -11,13 +11,18 @@ globalThis.settings = {
     militaryTime: false
   },
   searchBar: {
-    searchEngine: 'duckduckgo'
+    searchEngine: 'duckduckgo',
+    searchPlaceHolder: 'search',
+    searchPlaceHolderAlignment: 'center'
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true
   },
   notesWidget: {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
+  },
+  weatherWidget: {
+    degreeType: 'F'
   }
 };
 
@@ -38,7 +43,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           case 'notes': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
             <div id="notes" class="double-child hidden-el">
-              <p class="non-highlight">Notes</p>
+              <p>Notes</p>
               <textarea id="notes-input">${items.notesWidget.notesValue}</textarea>
             </div>`;
 
@@ -47,7 +52,10 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
             <div id="weather" class="double-child hidden-el">
-              <p id="weather-info" class="non-highlight">...</p>
+              <div id="weather-info">
+                <p id="weather-info-location">...</p>
+                <p>(${items.weatherWidget.degreeType}°)</p>
+              </div>
               <div id="weather-grid"></div>
             </div>`;
 
@@ -61,11 +69,21 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
     }
     switch (type) {
       case 'time': {
-        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="non-highlight hidden-el"></h1>`;
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el"></h1>`;
         break;
       }
       case 'search': {
-        container.innerHTML = `${container.innerHTML}<input id="search" class="hidden-el" placeholder="search" autocomplete="off">`;
+        let alignType;
+
+        // prettier-ignore
+        switch(items.searchBar.searchPlaceHolderAlignment) {
+          case 'rtl': alignType = 'end'; break;
+          case 'ltr': alignType = 'start' ; break;
+          case 'center': alignType = 'center' ; break;
+        }
+
+        container.innerHTML = `${container.innerHTML}<input id="search" class="hidden-el" 
+        placeholder="${!items.searchBar.searchPlaceHolder ? '' : items.searchBar.searchPlaceHolder}" autocomplete="off" style="text-align: ${alignType};">`;
 
         break;
       }
@@ -73,13 +91,13 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
         container.innerHTML = `${container.innerHTML}
         <div id="bookmarks-container" class="hidden-el">
           <div id="bookmarks-info">
-            <div class="non-highlight"> 
+            <div> 
               <p>Bookmarks |&nbsp;</p>
               <img src="up_arrow.svg" />
               <p>&nbsp;SHIFT + scroll</p>
             </div>
             <div id="bookmarks-new-tab-info">
-              <p class="non-highlight">Open in new tab</p>
+              <p>Open in new tab</p>
               <label class="switch">
                 <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
                 <span class="slider"></span>

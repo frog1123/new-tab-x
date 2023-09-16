@@ -38,6 +38,9 @@ const search = (items: typeof globalThis.settings, e: KeyboardEvent) => {
       case 'google':
         window.location.replace(`https://www.google.com/search?q=${searchBar.value}`);
         break;
+      case 'bing':
+        window.location.replace(`https://www.bing.com/search?q=${searchBar.value}`);
+        break;
     }
   }
 };
@@ -55,7 +58,10 @@ const runClock = (items: typeof globalThis.settings) => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    mainText.textContent = `${day} ${items.mainText.militaryTime === false ? parseInt(hours) % 12 : hours}:${minutes}:${seconds} ${
+    let nHours = parseInt(hours) % 12;
+    nHours = nHours ? parseInt(hours) : 12;
+
+    mainText.textContent = `${day} ${items.mainText.militaryTime === false ? nHours : hours}:${minutes}:${seconds} ${
       items.mainText.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''
     }`;
   }, 100);
@@ -113,7 +119,7 @@ const weatherWidgetScript = (items: typeof globalThis.settings) => {
           if (items.general.debugMode) console.log(data);
           const location = `${data.address.city}, ${data.address.country}`;
 
-          const weatherInfo = document.getElementById('weather-info') as HTMLParagraphElement;
+          const weatherInfo = document.getElementById('weather-info-location') as HTMLParagraphElement;
           weatherInfo!.innerHTML = `Weather | ${location}`;
         });
 
@@ -127,17 +133,6 @@ const weatherWidgetScript = (items: typeof globalThis.settings) => {
 
       let times: number[] = [0, 1, 2, 3, 4, 5, 6];
 
-      // for (let i = 0; i < 20; i++) {
-      //   const dayCode = new Date(data.hourly.time[i * 24]).getDay();
-      //   if (dayCode === 0) {
-      //     for (let j = 0; j < 7; j++) {
-      //       const dayCode = new Date(data.hourly.time[j * 24]).getDay();
-      //       times.push(dayCode);
-      //       console.log(dayCode);
-      //     }
-      //     break;
-      //   }
-      // }
       console.log(times);
 
       times.forEach(time => {
@@ -169,9 +164,9 @@ const weatherWidgetScript = (items: typeof globalThis.settings) => {
         const weatherGrid = document.getElementById('weather-grid') as HTMLDivElement;
         weatherGrid.innerHTML = `${weatherGrid.innerHTML}
         <div>
-            <p ${time === new Date().getDay() ? 'style="background-color: white;"' : ''}>${day}</p>
+            <p ${time === new Date().getDay() ? `id="weather-current-day";` : ''}>${day}</p>
             <p class="weather-emoji">${emoji}</p>
-            <p>${temp}°</p>
+            <p>${items.weatherWidget.degreeType === 'F' ? Math.round((parseFloat(temp) * 9) / 5 + 32) : temp}°</p>
         </div>`;
       });
     });

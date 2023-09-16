@@ -12,13 +12,18 @@ declare global {
       militaryTime: boolean;
     };
     searchBar: {
-      searchEngine: 'google' | 'duckduckgo';
+      searchEngine: 'google' | 'duckduckgo' | 'bing';
+      searchPlaceHolder: string | null;
+      searchPlaceHolderAlignment: 'ltr' | 'rtl' | 'center';
     };
     bookmarksWidget: {
       openBookmarkInNewTab: boolean;
     };
     notesWidget: {
       notesValue: string;
+    };
+    weatherWidget: {
+      degreeType: 'C' | 'F';
     };
   };
 
