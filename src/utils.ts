@@ -45,26 +45,50 @@ const search = (items: typeof globalThis.settings, e: KeyboardEvent) => {
   }
 };
 
-const runClock = (items: typeof globalThis.settings) => {
-  const mainText = document.getElementById('main-text') as HTMLElement;
+const runClock = (items: typeof globalThis.settings, type: 'time' | 'date') => {
+  if (type === 'time') {
+    const timeLogic = () => {
+      const mainText = document.getElementById('main-text') as HTMLElement;
 
-  setInterval(() => {
-    const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const d = new Date();
-    let day = weekday[d.getDay()];
+      const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const d = new Date();
+      let day = weekday[d.getDay()];
 
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    let nHours = parseInt(hours) % 12;
-    nHours = nHours ? parseInt(hours) : 12;
+      let nHours = parseInt(hours) % 12;
+      nHours = nHours ? parseInt(hours) : 12;
 
-    mainText.textContent = `${day} ${items.mainText.militaryTime === false ? nHours : hours}:${minutes}:${seconds} ${
-      items.mainText.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''
-    }`;
-  }, 100);
+      mainText.textContent = `${day} ${items.mainText.militaryTime === false ? nHours : hours}:${minutes}:${seconds} ${
+        items.mainText.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''
+      }`;
+    };
+
+    timeLogic();
+    setInterval(() => timeLogic(), 100);
+  }
+
+  if (type === 'date') {
+    const dateLogic = () => {
+      const mainText = document.getElementById('main-text') as HTMLElement;
+
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+      const currentDate = new Date();
+      const dayOfWeek = days[currentDate.getDay()];
+      const dayOfMonth = currentDate.getDate();
+      const month = months[currentDate.getMonth()];
+
+      mainText.textContent = `${dayOfWeek}, ${dayOfMonth} ${month}`;
+    };
+
+    dateLogic();
+    setInterval(() => dateLogic(), 1000);
+  }
 };
 
 const setBookmarks = () => {

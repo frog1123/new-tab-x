@@ -4,9 +4,10 @@ globalThis.settings = {
     preferredTitle: 'new tab x',
     bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
     accentColor: '#8898de',
-    order: ['time', 'search', 'bookmarks', ['notes', 'weather']]
+    order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
   },
   mainText: {
+    type: 'date',
     font: 'Monaco, monospace',
     militaryTime: false
   },
@@ -68,8 +69,18 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
       return;
     }
     switch (type) {
-      case 'time': {
-        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el"></h1>`;
+      case 'main': {
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el">...</h1>`;
+        (document.getElementById('main-text') as HTMLElement).style.fontFamily = items.mainText.font;
+
+        if (items.mainText.type === 'time') {
+          runClock(items, 'time');
+        }
+
+        if (items.mainText.type === 'date') {
+          runClock(items, 'date');
+        }
+
         break;
       }
       case 'search': {
@@ -111,9 +122,6 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
       }
     }
   });
-
-  (document.getElementById('main-text') as HTMLElement).style.fontFamily = items.mainText.font;
-  runClock(items);
 
   (document.getElementById('search') as HTMLInputElement).onkeydown = e => search(items, e);
 

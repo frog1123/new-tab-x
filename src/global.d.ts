@@ -8,6 +8,7 @@ declare global {
       order: (string | [string, string])[];
     };
     mainText: {
+      type: 'time' | 'date';
       font: 'Arial, sans-serif' | 'Monaco, monospace';
       militaryTime: boolean;
     };
