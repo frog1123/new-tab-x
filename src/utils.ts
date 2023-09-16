@@ -41,6 +41,8 @@ const search = (items: typeof globalThis.settings, e: KeyboardEvent) => {
       case 'bing':
         window.location.replace(`https://www.bing.com/search?q=${searchBar.value}`);
         break;
+      case 'yahoo':
+        window.location.replace(`https://search.yahoo.com/search?p=${searchBar.value}`);
     }
   }
 };

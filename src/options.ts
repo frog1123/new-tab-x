@@ -9,12 +9,13 @@ globalThis.settings = {
   mainText: {
     type: 'date',
     font: 'Monaco, monospace',
-    militaryTime: false
+    militaryTime: true
   },
   searchBar: {
     searchEngine: 'duckduckgo',
     searchPlaceHolder: 'search',
-    searchPlaceHolderAlignment: 'center'
+    searchPlaceHolderAlignment: 'ltr',
+    showIcon: false
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true
@@ -40,23 +41,35 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
           <span class="slider"></span>
         </label>
       </div>
-      <div>
+      <div class="input-container">
         <p>preferred title</p>
         <input id="preferredTitle" placeholder="${items.general.preferredTitle}">
       </div>
+      <div class="input-container-large">
+      <p>background url</p>
+      <input id="bgUrl" placeholder="${items.general.bgUrl}">
+    </div>
     </div>
   `;
 });
+
+const run = (v: any, f: () => void) => {
+  if (v !== null && v !== undefined && v !== '') f();
+};
 
 const saveBtn = document.getElementById('save') as HTMLButtonElement;
 saveBtn.onclick = () => {
   // general
   const debugMode = document.getElementById('debugMode') as HTMLInputElement;
   const preferredTitle = document.getElementById('preferredTitle') as HTMLInputElement;
+  const bgUrl = document.getElementById('bgUrl') as HTMLInputElement;
 
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-    chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, debugMode: debugMode.checked } }, () => {});
-    chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, preferredTitle: preferredTitle.value } }, () => {});
+    run(debugMode.checked, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, debugMode: debugMode.checked } }, () => {}));
+    run(preferredTitle.value, () =>
+      chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, preferredTitle: preferredTitle.value } }, () => {})
+    );
+    run(bgUrl.value, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, bgUrl: bgUrl.value } }, () => {}));
   });
 };
 

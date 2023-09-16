@@ -14,7 +14,8 @@ globalThis.settings = {
   searchBar: {
     searchEngine: 'duckduckgo',
     searchPlaceHolder: 'search',
-    searchPlaceHolderAlignment: 'center'
+    searchPlaceHolderAlignment: 'ltr',
+    showIcon: true
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true
@@ -35,6 +36,8 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
 
   const container = document.getElementById('container') as HTMLDivElement;
   items.general.order.forEach((type: string | [string, string], index: number) => {
+    const delay = index * 50 + 'ms';
+
     if (type instanceof Array) {
       container.innerHTML = `${container.innerHTML}<div id="d${index}-container" class="double-container"></div>`;
       const dContainer = document.getElementById(`d${index}-container`);
@@ -43,7 +46,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
         switch (type) {
           case 'notes': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="notes" class="double-child hidden-el">
+            <div id="notes" class="double-child hidden-el" style="transition-delay: ${delay};">
               <p>Notes</p>
               <textarea id="notes-input">${items.notesWidget.notesValue}</textarea>
             </div>`;
@@ -52,7 +55,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           }
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="weather" class="double-child hidden-el">
+            <div id="weather" class="double-child hidden-el" style="transition-delay: ${delay};">
               <div id="weather-info">
                 <p id="weather-info-location">...</p>
                 <p>(${items.weatherWidget.degreeType}°)</p>
@@ -70,7 +73,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
     }
     switch (type) {
       case 'main': {
-        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el">...</h1>`;
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el" style="transition-delay: ${delay};">...</h1>`;
         (document.getElementById('main-text') as HTMLElement).style.fontFamily = items.mainText.font;
 
         if (items.mainText.type === 'time') {
@@ -93,14 +96,23 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           case 'center': alignType = 'center' ; break;
         }
 
-        container.innerHTML = `${container.innerHTML}<input id="search" class="hidden-el" 
-        placeholder="${!items.searchBar.searchPlaceHolder ? '' : items.searchBar.searchPlaceHolder}" autocomplete="off" style="text-align: ${alignType};">`;
+        container.innerHTML = `${container.innerHTML}
+        <div id="search-container" class="hidden-el" ${
+          items.searchBar.showIcon
+            ? `style="
+            grid-template-columns: max-content auto;
+            gap: 6px; transition-delay: ${delay};"`
+            : `style="transition-delay: ${delay};"`
+        }>
+          ${items.searchBar.showIcon ? `<img src="${items.searchBar.searchEngine}.png" />` : ''}
+          <input id="search" placeholder="${!items.searchBar.searchPlaceHolder ? '' : items.searchBar.searchPlaceHolder}" autocomplete="off" style="text-align: ${alignType};">
+        </div>`;
 
         break;
       }
       case 'bookmarks': {
         container.innerHTML = `${container.innerHTML}
-        <div id="bookmarks-container" class="hidden-el">
+        <div id="bookmarks-container" class="hidden-el" style="transition-delay: ${delay};">
           <div id="bookmarks-info">
             <div> 
               <p>Bookmarks |&nbsp;</p>

@@ -13,9 +13,10 @@ declare global {
       militaryTime: boolean;
     };
     searchBar: {
-      searchEngine: 'google' | 'duckduckgo' | 'bing';
+      searchEngine: 'google' | 'duckduckgo' | 'bing' | 'yahoo';
       searchPlaceHolder: string | null;
       searchPlaceHolderAlignment: 'ltr' | 'rtl' | 'center';
+      showIcon: boolean;
     };
     bookmarksWidget: {
       openBookmarkInNewTab: boolean;

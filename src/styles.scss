@@ -107,25 +107,38 @@ input:checked + .slider:before {
   }
 }
 
-#search {
+#search-container {
   height: 35px;
   width: inherit;
   border-radius: $border-radius !important;
-  font-size: 20px;
-  outline: none;
-  color: white;
   padding-left: 6px;
   padding-right: 6px;
+  display: grid;
+  place-items: center;
 
   @include glass;
 
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-    filter: blur(0px);
+  & img {
+    width: 25px;
+    height: 25px;
   }
 
-  @media screen and (max-width: 600px) {
-    font-size: 14px;
+  & #search {
+    width: 100%;
+    font-size: 20px;
+    outline: none;
+    border-width: 0px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      filter: blur(0px);
+    }
+
+    @media screen and (max-width: 600px) {
+      font-size: 14px;
+    }
   }
 }
 
