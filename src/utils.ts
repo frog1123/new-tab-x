@@ -1,19 +1,21 @@
 const inital = (items: typeof globalThis.settings) => {
-  console.log(
-    '%c👁️| new tab enabled %cx\n%clogs can be enabled by enabling debug mode%c',
-    'color: #a533e8',
-    'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;',
-    ''
-  );
-  console.log(
-    '%c👁️| new tab enabled %cx\n%clogs can be disbaled by disabling debug mode%c',
-    'color: #a533e8',
-    'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;',
-    ''
-  );
+  if (!items.general.debugMode)
+    console.log(
+      '%c👁️| new tab enabled %cx\n%clogs can be enabled by enabling debug mode',
+      'color: #a533e8',
+      'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;',
+      ''
+    );
+  else
+    console.log(
+      '%c👁️| new tab enabled %cx\n%clogs can be disbaled by disabling debug mode',
+      'color: #a533e8',
+      'background-color: #6fedd6; color: #ffffff; border-radius: 4px; padding-left: 4px; padding-right: 4px;',
+      ''
+    );
 
   if (items.general.debugMode) console.log(`version: ${chrome.runtime.getManifest().version}`);
-  if (items.general.debugMode) console.table(items);
+  if (items.general.debugMode) console.log(items);
 
   document.title = items.general.preferredTitle;
   (document.querySelector('body') as HTMLElement).style.background = `url(${items.general.bgUrl}) center / cover no-repeat fixed`;
@@ -115,34 +117,61 @@ const weatherWidgetScript = (items: typeof globalThis.settings) => {
           weatherInfo!.innerHTML = `Weather | ${location}`;
         });
 
-      const getAverages = (data: any[]) => {
-        let avgArr = [];
-        for (let i = 0; i < 7; i += 1) {
-          const first24 = data.slice(i * 24, i * 24 + 24);
-          const avgSum = first24.reduce((a: any, b: any) => a + b, 0);
-          const average = (avgSum / 24).toFixed(0);
-          avgArr[avgArr.length] = average;
-        }
-        return avgArr;
+      const getAverages = (data: any[], day: number) => {
+        const first24 = data.slice(day * 24, (day + 1) * 24);
+        const avgSum = first24.reduce((a: any, b: any) => a + b, 0);
+        const average = (avgSum / 24).toFixed(0);
+
+        return average;
       };
 
-      const days = [0, 1, 2, 3, 4, 5, 6];
-      const temps: string[] = getAverages(data.hourly.temperature_2m);
-      const windspeeds: string[] = getAverages(data.hourly.windspeed_10m);
-      const rains: string[] = getAverages(data.hourly.rain);
-      const cloudcovers: string[] = getAverages(data.hourly.cloudcover);
+      let times: number[] = [0, 1, 2, 3, 4, 5, 6];
 
-      days.forEach(day => {
+      // for (let i = 0; i < 20; i++) {
+      //   const dayCode = new Date(data.hourly.time[i * 24]).getDay();
+      //   if (dayCode === 0) {
+      //     for (let j = 0; j < 7; j++) {
+      //       const dayCode = new Date(data.hourly.time[j * 24]).getDay();
+      //       times.push(dayCode);
+      //       console.log(dayCode);
+      //     }
+      //     break;
+      //   }
+      // }
+      console.log(times);
+
+      times.forEach(time => {
+        let day;
+
+        // prettier-ignore
+        switch (time) {
+          case 0: day = 'S'; break;
+          case 1: day = 'M'; break;
+          case 2: day = 'T'; break;
+          case 3: day = 'W'; break;
+          case 4: day = 'T'; break;
+          case 5: day = 'F'; break;
+          case 6: day = 'S'; break;
+        }
+
+        const temp: string = getAverages(data.hourly.temperature_2m, time);
+        const windspeed: string = getAverages(data.hourly.windspeed_10m, time);
+        const rain: string = getAverages(data.hourly.rain, time);
+        const cloudcover: string = getAverages(data.hourly.cloudcover, time);
+
         let emoji = '☀️';
-        if (parseFloat(windspeeds[day]) > 10) emoji = '🍃';
-        if (parseFloat(cloudcovers[day]) > 80) emoji = '☁️';
-        if (parseFloat(rains[day]) > 10) emoji = '🌧️';
+        if (parseFloat(windspeed) > 10) emoji = '🍃';
+        if (parseFloat(cloudcover) > 80) emoji = '☁️';
+        if (parseFloat(rain) > 10) emoji = '🌧️';
+
+        // wip
 
         const weatherGrid = document.getElementById('weather-grid') as HTMLDivElement;
         weatherGrid.innerHTML = `${weatherGrid.innerHTML}
         <div>
+            <p ${time === new Date().getDay() ? 'style="background-color: white;"' : ''}>${day}</p>
             <p class="weather-emoji">${emoji}</p>
-            <p>${temps[day]}°</p>
+            <p>${temp}°</p>
         </div>`;
       });
     });

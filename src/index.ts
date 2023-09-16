@@ -38,7 +38,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           case 'notes': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
             <div id="notes" class="double-child hidden-el">
-              <p>Notes</p>
+              <p class="non-highlight">Notes</p>
               <textarea id="notes-input">${items.notesWidget.notesValue}</textarea>
             </div>`;
 
@@ -47,7 +47,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
             <div id="weather" class="double-child hidden-el">
-              <p id="weather-info">...</p>
+              <p id="weather-info" class="non-highlight">...</p>
               <div id="weather-grid"></div>
             </div>`;
 
@@ -61,11 +61,11 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
     }
     switch (type) {
       case 'time': {
-        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el"></h1>`;
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="non-highlight hidden-el"></h1>`;
         break;
       }
       case 'search': {
-        container.innerHTML = `${container.innerHTML}<input id="search" class="hidden-el" placeholder="search" autocomplete="off"><div class="custom-caret" id="caret"></div>`;
+        container.innerHTML = `${container.innerHTML}<input id="search" class="hidden-el" placeholder="search" autocomplete="off">`;
 
         break;
       }
@@ -73,13 +73,13 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
         container.innerHTML = `${container.innerHTML}
         <div id="bookmarks-container" class="hidden-el">
           <div id="bookmarks-info">
-            <div> 
+            <div class="non-highlight"> 
               <p>Bookmarks |&nbsp;</p>
               <img src="up_arrow.svg" />
               <p>&nbsp;SHIFT + scroll</p>
             </div>
             <div id="bookmarks-new-tab-info">
-              <p>Open in new tab</p>
+              <p class="non-highlight">Open in new tab</p>
               <label class="switch">
                 <input type="checkbox" id="bookmarks-new-tab-toggle" placeholder="false">
                 <span class="slider"></span>
