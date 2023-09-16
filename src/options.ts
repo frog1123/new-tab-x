@@ -5,8 +5,11 @@ const saveBtn = document.getElementById('save') as HTMLButtonElement;
 
 saveBtn.onclick = () => {
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-    chrome.storage.sync.set({ preferredTitle: preferredTitleInput.value === '' ? items.general.preferredTitle : preferredTitleInput.value }, () => {});
-    chrome.storage.sync.set({ bgUrl: bgInput.value === '' ? items.general.bgUrl : bgInput.value }, () => {});
-    chrome.storage.sync.set({ order: orderInput.value === '' ? items.general.order : JSON.parse(orderInput.value) }, () => {});
+    chrome.storage.sync.set(
+      { ...items, general: { ...items.general, preferredTitle: preferredTitleInput.value === '' ? items.general.preferredTitle : preferredTitleInput.value } },
+      () => {}
+    );
+    chrome.storage.sync.set({ ...items, general: { ...items.general, bgUrl: bgInput.value === '' ? items.general.bgUrl : bgInput.value } }, () => {});
+    chrome.storage.sync.set({ ...items, general: { ...items.general, order: orderInput.value === '' ? items.general.order : JSON.parse(orderInput.value) } }, () => {});
   });
 };

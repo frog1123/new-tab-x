@@ -104,18 +104,20 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
 
   bookmarksNewTabToggle.onclick = () => {
     chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-      chrome.storage.sync.set<typeof globalThis.settings>(, () => {});
+      chrome.storage.sync.set<typeof globalThis.settings>(
+        { ...items, bookmarksWidget: { ...items.bookmarksWidget, openBookmarkInNewTab: !items.bookmarksWidget.openBookmarkInNewTab } },
+        () => {}
+      );
     });
   };
-
-  // wip
 
   setBookmarks();
 
   const notesInput = document.getElementById('notes-input') as HTMLInputElement;
 
   if (notesInput) {
-    notesInput.oninput = () => chrome.storage.sync.set({ notesValue: notesInput.value }, () => {});
+    notesInput.oninput = () =>
+      chrome.storage.sync.set<typeof globalThis.settings>({ ...items, notesWidget: { ...items.notesWidget, notesValue: notesInput.value } }, () => {});
   }
 
   fadeAnimation();
