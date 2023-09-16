@@ -157,8 +157,6 @@ const weatherWidgetScript = (items: typeof globalThis.settings) => {
 
       let times: number[] = [0, 1, 2, 3, 4, 5, 6];
 
-      console.log(times);
-
       times.forEach(time => {
         let day;
 

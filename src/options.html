@@ -4,23 +4,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="options.css">
   <script src="options.js" defer></script>
   <title>options</title>
 </head>
 
-<body>
-  <h1>options</h1>
-
-  <p>preferred title</p>
-  <input id="preferred-title-input">
-
-  <p>background url</p>
-  <input id="background-input">
-
-  <p>order</p>
-  <input id="order-input" placeholder="['time', 'search', 'bookmarks']">
-
-  <button id="save">save</button>
+<body dir="ltr">
+  <main id="main">
+    <img id="logo" class="float-animation" src="logo.svg" />
+    <h1 id="title-text" class="hidden-text">new tab <span>x</span></h1>
+    <div id="hotkeys-info-container">
+      <div id="hotkeys-info">
+        <div class="hotkey-info hidden-side-text" style="transition-delay: 0ms;">
+          <div>
+            <img src="up_arrow_gray.svg" />
+            <p>U</p>
+          </div>
+          <p>top</p>
+        </div>
+        <div class="hotkey-info hidden-side-text" style="transition-delay: 50ms;">
+          <div>
+            <img src="up_arrow_gray.svg" />
+            <p>D</p>
+          </div>
+          <p>bottom</p>
+        </div>
+        <div class="hotkey-info hidden-side-text" style="transition-delay: 100ms;">
+          <div>
+            <img src="up_arrow_gray.svg" />
+            <p>S</p>
+          </div>
+          <p>save</p>
+        </div>
+        <div class="hotkey-info hidden-side-text" style="transition-delay: 150ms;">
+          <div>
+            <img src="up_arrow_gray.svg" />
+            <p>E</p>
+          </div>
+          <p>export</p>
+        </div>
+        <div class="hotkey-info hidden-side-text" style="transition-delay: 200ms;">
+          <div>
+            <img src="up_arrow_gray.svg" />
+            <p>I</p>
+          </div>
+          <p>import</p>
+        </div>
+      </div>
+    </div>
+    <div id="hotkeys-note">
+      <img src="up_arrow_gray.svg" />
+      <p>CTRL + key |</p>
+      <img src="command_gray.svg" />
+      <p>CMD + key for Mac</p>
+    </div>
+    <p class="title-p hidden-text">general</p>
+    <div class="line"></div>
+    <div id="general-container"></div>
+    <div id="btns-container">
+      <button id="save">
+        <p>save</p>
+      </button>
+      <button id="export">
+        <p>export</p>
+      </button>
+      <button id="import">
+        <p>import</p>
+      </button>
+    </div>
+  </main>
 </body>
 
 </html>
