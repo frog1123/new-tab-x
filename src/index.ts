@@ -24,7 +24,9 @@ globalThis.settings = {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
   },
   weatherWidget: {
-    degreeType: 'F'
+    degreeType: 'F',
+    latitude: '40.73061',
+    longitude: '-73.935242'
   }
 };
 

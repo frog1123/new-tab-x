@@ -26,6 +26,8 @@ declare global {
     };
     weatherWidget: {
       degreeType: 'C' | 'F';
+      longitude: string;
+      latitude: string;
     };
   };
 

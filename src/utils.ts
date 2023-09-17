@@ -131,7 +131,7 @@ const setBookmarks = () => {
 };
 
 const weatherWidgetScript = (items: typeof globalThis.settings) => {
-  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${40.73061}&longitude=${-73.935242}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation,rain,cloudcover`;
+  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${items.weatherWidget.latitude}&longitude=${items.weatherWidget.longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation,rain,cloudcover`;
 
   fetch(apiUrl)
     .then(res => res.json())

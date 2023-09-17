@@ -24,7 +24,9 @@ globalThis.settings = {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
   },
   weatherWidget: {
-    degreeType: 'F'
+    degreeType: 'F',
+    latitude: '40.73061',
+    longitude: '-73.935242'
   }
 };
 
@@ -105,6 +107,24 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
       </div>
     </div>
   `;
+
+  const weatherWidgetContainer = document.getElementById('weather-widget-container') as HTMLDivElement;
+  weatherWidgetContainer.innerHTML = `${weatherWidgetContainer.innerHTML}
+    <div class="input-containers-container">
+      <div class="input-container">
+        <p>degree (F | C)</p>
+        <input id="degreeType" placeholder="${items.weatherWidget.degreeType}">
+      </div>
+      <div class="input-container">
+        <p>latitude</p>
+        <input id="latitude" placeholder="${items.weatherWidget.latitude}">
+      </div>
+      <div class="input-container">
+        <p>longitude</p>
+        <input id="longitude" placeholder="${items.weatherWidget.longitude}">
+      </div>
+    </div>
+  `;
 });
 
 const run = (v: any, f: () => void) => {
@@ -159,6 +179,11 @@ saveBtn.onclick = async () => {
   const searchPlaceHolderAlignment = document.getElementById('searchPlaceHolderAlignment') as HTMLInputElement;
   const showIcon = document.getElementById('showIcon') as HTMLInputElement;
 
+  // weather
+  const degreeType = document.getElementById('degreeType') as HTMLInputElement;
+  const latitude = document.getElementById('latitude') as HTMLInputElement;
+  const longitude = document.getElementById('longitude') as HTMLInputElement;
+
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
     setValue(items, 'general', 'debugMode', debugMode.checked)
       .then(i => setValue(i, 'general', 'preferredTitle', preferredTitle.value))
@@ -171,7 +196,10 @@ saveBtn.onclick = async () => {
       .then(i => setValue(i, 'searchBar', 'searchEngine', searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
       .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', searchPlaceHolder.value))
       .then(i => setValue(i, 'searchBar', 'searchPlaceHolderAlignment', searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment))
-      .then(i => setValue(i, 'searchBar', 'showIcon', showIcon.checked));
+      .then(i => setValue(i, 'searchBar', 'showIcon', showIcon.checked))
+      .then(i => setValue(i, 'weatherWidget', 'degreeType', degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
+      .then(i => setValue(i, 'weatherWidget', 'latitude', latitude.value))
+      .then(i => setValue(i, 'weatherWidget', 'longitude', longitude.value));
   });
 
   alert('options saved');
