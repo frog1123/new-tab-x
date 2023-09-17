@@ -138,20 +138,23 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
   items: typeof globalThis.settings,
   category: T,
   property: K,
+  input: HTMLInputElement,
   value: (typeof globalThis.settings)[T][K]
 ): Promise<typeof globalThis.settings> => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     if (value !== null && value !== undefined && value !== '') {
       let categoryToAdd: any = { ...items };
       let propertyToAdd: any = { ...items[category] };
       propertyToAdd[property] = value;
       categoryToAdd[category] = propertyToAdd;
-
-      // console.log(property, 'intermediate', items[category]);
-
+      console.log(property, 'intermediate', items[category]);
       chrome.storage.sync.set<typeof globalThis.settings>(categoryToAdd, () => {
         chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
           console.log(property, items[category]);
+          input.placeholder = value.toString();
+          if (value instanceof Array) input.placeholder = JSON.stringify(value);
+
+          input.value = '';
           resolve(items);
         });
       });
@@ -185,24 +188,37 @@ saveBtn.onclick = async () => {
   const longitude = document.getElementById('longitude') as HTMLInputElement;
 
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-    setValue(items, 'general', 'debugMode', debugMode.checked)
-      .then(i => setValue(i, 'general', 'preferredTitle', preferredTitle.value))
-      .then(i => setValue(i, 'general', 'bgUrl', bgUrl.value))
-      .then(i => setValue(i, 'general', 'accentColor', accentColor.value))
-      .then(i => setValue(i, 'general', 'order', order.value ? JSON.parse(order.value.replace(/&quot;/g, '"')) : ''))
-      .then(i => setValue(i, 'mainText', 'type', type.value as typeof globalThis.settings.mainText.type))
-      .then(i => setValue(i, 'mainText', 'font', font.value))
-      .then(i => setValue(i, 'mainText', 'militaryTime', militaryTime.checked))
-      .then(i => setValue(i, 'searchBar', 'searchEngine', searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
-      .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', searchPlaceHolder.value))
-      .then(i => setValue(i, 'searchBar', 'searchPlaceHolderAlignment', searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment))
-      .then(i => setValue(i, 'searchBar', 'showIcon', showIcon.checked))
-      .then(i => setValue(i, 'weatherWidget', 'degreeType', degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
-      .then(i => setValue(i, 'weatherWidget', 'latitude', latitude.value))
-      .then(i => setValue(i, 'weatherWidget', 'longitude', longitude.value));
+    setValue(items, 'general', 'debugMode', debugMode, debugMode.checked)
+      .then(i => setValue(i, 'general', 'preferredTitle', preferredTitle, preferredTitle.value))
+      .then(i => setValue(i, 'general', 'bgUrl', bgUrl, bgUrl.value))
+      .then(i => setValue(i, 'general', 'accentColor', accentColor, accentColor.value))
+      .then(i => setValue(i, 'general', 'order', order, order.value ? JSON.parse(order.value.replace(/&quot;/g, '"')) : ''))
+      .then(i => setValue(i, 'mainText', 'type', type, type.value as typeof globalThis.settings.mainText.type))
+      .then(i => setValue(i, 'mainText', 'font', font, font.value))
+      .then(i => setValue(i, 'mainText', 'militaryTime', militaryTime, militaryTime.checked))
+      .then(i => setValue(i, 'searchBar', 'searchEngine', searchEngine, searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
+      .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', searchPlaceHolder, searchPlaceHolder.value))
+      .then(i =>
+        setValue(
+          i,
+          'searchBar',
+          'searchPlaceHolderAlignment',
+          searchPlaceHolderAlignment,
+          searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment
+        )
+      )
+      .then(i => setValue(i, 'searchBar', 'showIcon', showIcon, showIcon.checked))
+      .then(i => setValue(i, 'weatherWidget', 'degreeType', degreeType, degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
+      .then(i => setValue(i, 'weatherWidget', 'latitude', latitude, latitude.value))
+      .then(i => setValue(i, 'weatherWidget', 'longitude', longitude, longitude.value));
   });
 
   alert('options saved');
+};
+
+const exportBtn = document.getElementById('export') as HTMLButtonElement;
+exportBtn.onclick = () => {
+  // TODO later
 };
 
 const hiddenElements = document.querySelectorAll('.hidden-text');
