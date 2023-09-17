@@ -87,29 +87,30 @@ const run = (v: any, f: () => void) => {
   if (v !== null && v !== undefined && v !== '') f();
 };
 
-type Property = (typeof globalThis.settings)['general'];
+// type Property = (typeof globalThis.settings)['general'];
 
-const setValueGeneral = async <T extends keyof Property>(
+const setValue = async <T extends keyof typeof globalThis.settings, K extends keyof (typeof globalThis.settings)[T]>(
   items: typeof globalThis.settings,
-  property: keyof Property,
-  value: Property[T]
+  category: T,
+  property: K,
+  value: (typeof globalThis.settings)[T][K]
 ): Promise<typeof globalThis.settings> => {
   return new Promise((resolve, reject) => {
     if (value !== null && value !== undefined && value !== '') {
-      let propertyToAdd: any = { ...items.general };
+      let categoryToAdd: any = { ...items };
+      let propertyToAdd: any = { ...items[category] };
       propertyToAdd[property] = value;
+      categoryToAdd[category] = propertyToAdd;
 
-      console.log(property, 'intermediate', items.general);
+      console.log(property, 'intermediate', items[category]);
 
-      chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: propertyToAdd }, () => {
+      chrome.storage.sync.set<typeof globalThis.settings>(categoryToAdd, () => {
         chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-          console.log(property, items.general);
+          console.log(property, items[category]);
           resolve(items);
         });
       });
-    } else {
-      resolve(items);
-    }
+    } else resolve(items);
   });
 };
 
@@ -127,34 +128,15 @@ saveBtn.onclick = async () => {
   const font = document.getElementById('font') as HTMLInputElement;
   const militaryTime = document.getElementById('militaryTime') as HTMLInputElement;
 
-  // items doesnt update
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-    setValueGeneral(items, 'debugMode', debugMode.checked)
-      .then(i => setValueGeneral(i, 'preferredTitle', preferredTitle.value))
-      .then(i => setValueGeneral(i, 'bgUrl', bgUrl.value))
-      .then(i => setValueGeneral(i, 'accentColor', accentColor.value))
-      .then(i => setValueGeneral(i, 'order', order.value));
-
-    // general
-    // general
-    // run(debugMode.checked, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, debugMode: debugMode.checked } }, () => {}));
-    // run(preferredTitle.value, () =>
-    //   chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, preferredTitle: preferredTitle.value } }, () => {})
-    // );
-    // run(bgUrl.value, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, bgUrl: bgUrl.value } }, () => {}));
-    // run(accentColor.value, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, bgUrl: accentColor.value } }, () => {}));
-    // run(order.value, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, general: { ...items.general, bgUrl: order.value } }, () => {}));
-    // mainText
-    // run(type.value, () =>
-    //   chrome.storage.sync.set<typeof globalThis.settings>(
-    //     { ...items, mainText: { ...items.mainText, type: type.value as typeof globalThis.settings.mainText.type } },
-    //     () => {}
-    //   )
-    // );
-    // run(font.value, () => chrome.storage.sync.set<typeof globalThis.settings>({ ...items, mainText: { ...items.mainText, font: font.value } }, () => {}));
-    // run(militaryTime.value, () =>
-    //   chrome.storage.sync.set<typeof globalThis.settings>({ ...items, mainText: { ...items.mainText, militaryTime: militaryTime.checked } }, () => {})
-    // );
+    setValue(items, 'general', 'debugMode', debugMode.checked)
+      .then(i => setValue(i, 'general', 'preferredTitle', preferredTitle.value))
+      .then(i => setValue(i, 'general', 'bgUrl', bgUrl.value))
+      .then(i => setValue(i, 'general', 'accentColor', accentColor.value))
+      // .then(i => setValue(i, 'general', 'order', JSON.parse(order.value))) // TODO fix later (quotes messed up)
+      .then(i => setValue(i, 'mainText', 'type', type.value as typeof globalThis.settings.mainText.type))
+      .then(i => setValue(i, 'mainText', 'font', font.value))
+      .then(i => setValue(i, 'mainText', 'militaryTime', militaryTime.checked));
   });
 
   alert('options saved');
