@@ -80,6 +80,31 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
       </div>
     </div>
   `;
+
+  const searchBarContainer = document.getElementById('search-bar-container') as HTMLDivElement;
+  searchBarContainer.innerHTML = `${searchBarContainer.innerHTML}
+    <div class="input-containers-container">
+      <div class="input-container">
+        <p>search engine (google | duckduckgo | bing | yahoo)</p>
+        <input id="searchEngine" placeholder="${items.searchBar.searchEngine}">
+      </div>
+      <div class="input-container">
+        <p>search placeholder</p>
+        <input id="searchPlaceHolder" placeholder="${items.searchBar.searchPlaceHolder}">
+      </div>
+      <div class="input-container">
+        <p>search placeholder alignment (ltr | rtl | center)</p>
+        <input id="searchPlaceHolderAlignment" placeholder="${items.searchBar.searchPlaceHolderAlignment}">
+      </div>
+      <div class="input-container-toggle">
+        <p>show icon</p>
+        <label class="switch">
+          <input type="checkbox" id="showIcon" ${items.searchBar.showIcon ? 'checked' : ''}>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  `;
 });
 
 const run = (v: any, f: () => void) => {
@@ -102,7 +127,7 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
       propertyToAdd[property] = value;
       categoryToAdd[category] = propertyToAdd;
 
-      console.log(property, 'intermediate', items[category]);
+      // console.log(property, 'intermediate', items[category]);
 
       chrome.storage.sync.set<typeof globalThis.settings>(categoryToAdd, () => {
         chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
@@ -128,15 +153,25 @@ saveBtn.onclick = async () => {
   const font = document.getElementById('font') as HTMLInputElement;
   const militaryTime = document.getElementById('militaryTime') as HTMLInputElement;
 
+  //searchBar
+  const searchEngine = document.getElementById('searchEngine') as HTMLInputElement;
+  const searchPlaceHolder = document.getElementById('searchPlaceHolder') as HTMLInputElement;
+  const searchPlaceHolderAlignment = document.getElementById('searchPlaceHolderAlignment') as HTMLInputElement;
+  const showIcon = document.getElementById('showIcon') as HTMLInputElement;
+
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
     setValue(items, 'general', 'debugMode', debugMode.checked)
       .then(i => setValue(i, 'general', 'preferredTitle', preferredTitle.value))
       .then(i => setValue(i, 'general', 'bgUrl', bgUrl.value))
       .then(i => setValue(i, 'general', 'accentColor', accentColor.value))
-      // .then(i => setValue(i, 'general', 'order', JSON.parse(order.value))) // TODO fix later (quotes messed up)
+      .then(i => setValue(i, 'general', 'order', order.value ? JSON.parse(order.value.replace(/&quot;/g, '"')) : ''))
       .then(i => setValue(i, 'mainText', 'type', type.value as typeof globalThis.settings.mainText.type))
       .then(i => setValue(i, 'mainText', 'font', font.value))
-      .then(i => setValue(i, 'mainText', 'militaryTime', militaryTime.checked));
+      .then(i => setValue(i, 'mainText', 'militaryTime', militaryTime.checked))
+      .then(i => setValue(i, 'searchBar', 'searchEngine', searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
+      .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', searchPlaceHolder.value))
+      .then(i => setValue(i, 'searchBar', 'searchPlaceHolderAlignment', searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment))
+      .then(i => setValue(i, 'searchBar', 'showIcon', showIcon.checked));
   });
 
   alert('options saved');
