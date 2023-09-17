@@ -1,5 +1,5 @@
 - improve settings page
 - add more customizability
 
-- fix order
+- add import export feature
 - fix am pm clock
