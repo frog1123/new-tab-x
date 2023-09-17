@@ -7,8 +7,15 @@ not on chrome webstore yet
 
 <div align="center">
   
-  <img src="example.png">
+  <img src="example-1.png">
+
+  <img src="example-2.png">
   
 </div>
 
-custom new tab page you can set your own background and more
+custom new tab page you can set your own:
+
+- background
+- widgets
+- search engine
+- more
