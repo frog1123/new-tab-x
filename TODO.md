@@ -1,4 +1,2 @@
 - improve settings page
 - add more customizability
-- add remove function for bookmark widget
-- improve search

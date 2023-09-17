@@ -9,7 +9,7 @@ declare global {
     };
     mainText: {
       type: 'time' | 'date';
-      font: 'Arial, sans-serif' | 'Monaco, monospace';
+      font: string;
       militaryTime: boolean;
     };
     searchBar: {
