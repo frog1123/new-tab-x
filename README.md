@@ -3,7 +3,7 @@
   <h1>new tab x</h1>
 </div>
 
-not on chrome webstore yet
+not on chrome webstore yet (you can try the developer build by using the new-tab-x-dist.zip file)
 
 <div align="center">
   
