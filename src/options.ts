@@ -162,7 +162,7 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
       chrome.storage.sync.set<typeof globalThis.settings>(categoryToAdd, () => {
         chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
           input.placeholder = value.toString();
-          if (value instanceof Array) input.placeholder = JSON.stringify(value);
+          if (value instanceof Array) input.placeholder = JSON.stringify(value); // order
           input.value = '';
           resolve(items);
         });
@@ -231,6 +231,13 @@ saveBtn.onclick = async () => {
 const exportBtn = document.getElementById('export') as HTMLButtonElement;
 exportBtn.onclick = () => {
   // TODO later
+  alert('not implemented yet');
+};
+
+const importBtn = document.getElementById('import') as HTMLButtonElement;
+importBtn.onclick = () => {
+  // TODO later
+  alert('not implemented yet');
 };
 
 const hiddenElements = document.querySelectorAll('.hidden-text');
