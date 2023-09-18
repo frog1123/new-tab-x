@@ -147,13 +147,11 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
       let propertyToAdd: any = { ...items[category] };
       propertyToAdd[property] = value;
       categoryToAdd[category] = propertyToAdd;
-      console.log(property, 'intermediate', items[category]);
+
       chrome.storage.sync.set<typeof globalThis.settings>(categoryToAdd, () => {
         chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-          console.log(property, items[category]);
           input.placeholder = value.toString();
           if (value instanceof Array) input.placeholder = JSON.stringify(value);
-
           input.value = '';
           resolve(items);
         });

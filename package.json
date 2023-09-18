@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run ts && npm run sass && npm run icons && npm run assets && npm run manifest && npm run page && npm run popup && npm run options",
-    "build:final": "npm run build && gulp buildhtml && gulp buildjs && gulp buildcss && npm run icons:final && npm run assets:final npm run manifest:final && npm run page:final && npm run popup:final && npm run options:final",
+    "build:final": "npm run build && gulp buildhtml && gulp buildjs && gulp buildcss && npm run icons:final && npm run assets:final && npm run manifest:final && npm run page:final && npm run popup:final && npm run options:final",
     "ts:w": "tsc -w",
     "sass:w": "sass --watch --style=compressed --no-source-map src:dist",
     "ts": "tsc",
