@@ -18,7 +18,8 @@ globalThis.settings = {
     showIcon: true
   },
   bookmarksWidget: {
-    openBookmarkInNewTab: true
+    openBookmarkInNewTab: true,
+    bookmarkRows: 2
   },
   notesWidget: {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
@@ -129,7 +130,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
               </label>
             </div>
           </div>
-          <div id="bookmarks-grid"></div>
+          
         </div>`;
 
         break;
@@ -151,7 +152,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
     });
   };
 
-  setBookmarks();
+  setBookmarks(items);
 
   const notesInput = document.getElementById('notes-input') as HTMLInputElement;
 

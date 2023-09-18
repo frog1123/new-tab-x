@@ -20,6 +20,7 @@ declare global {
     };
     bookmarksWidget: {
       openBookmarkInNewTab: boolean;
+      bookmarkRows: number;
     };
     notesWidget: {
       notesValue: string;

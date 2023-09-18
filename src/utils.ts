@@ -93,16 +93,33 @@ const runClock = (items: typeof globalThis.settings, type: 'time' | 'date') => {
   }
 };
 
-const setBookmarks = () => {
+const setBookmarks = (items: typeof globalThis.settings) => {
   chrome.bookmarks.search({}, bookmarkItems => {
     const source = [];
-    for (var i = 0; i < bookmarkItems.length; i++) {
+    for (let i = 0; i < bookmarkItems.length; i++) {
       source[i] = bookmarkItems[i];
     }
 
-    const bookmarks = document.getElementById('bookmarks-grid') as HTMLElement;
+    // const bookmarks = document.getElementById('bookmarks-grid') as HTMLElement;
+    const bookmarksContainer = document.getElementById('bookmarks-container') as HTMLElement;
 
-    source.forEach(item => {
+    for (let i = 0; i < items.bookmarksWidget.bookmarkRows; i++) {
+      bookmarksContainer.innerHTML = `${bookmarksContainer.innerHTML}<div id="bmk-g${i}" class="bookmarks-grid"></div>`;
+    }
+
+    if (source.length === 0) {
+      bookmarksContainer.innerHTML = `${bookmarksContainer.innerHTML}
+      <div id="no-bookmark-filler">
+        <p>You have no bookmarks</p>
+      </div>
+      `;
+    }
+
+    source.forEach((item, index) => {
+      const _index = index % items.bookmarksWidget.bookmarkRows;
+
+      const bookmarks = document.getElementById(`bmk-g${_index}`) as HTMLDivElement;
+
       const node = document.createElement('div');
       const nodeClass = document.createAttribute('class');
       nodeClass.value = 'bookmark';

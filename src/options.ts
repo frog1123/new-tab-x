@@ -18,7 +18,8 @@ globalThis.settings = {
     showIcon: false
   },
   bookmarksWidget: {
-    openBookmarkInNewTab: true
+    openBookmarkInNewTab: true,
+    bookmarkRows: 2
   },
   notesWidget: {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
@@ -108,6 +109,16 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     </div>
   `;
 
+  const bookmarksWidgetContainer = document.getElementById('bookmarks-widget-container') as HTMLDivElement;
+  bookmarksWidgetContainer.innerHTML = `${bookmarksWidgetContainer.innerHTML}
+  <div class="input-containers-container">
+    <div class="input-container">
+      <p>bookmark rows</p>
+      <input id="bookmarkRows" placeholder="${items.bookmarksWidget.bookmarkRows}">
+    </div>
+  </div>
+`;
+
   const weatherWidgetContainer = document.getElementById('weather-widget-container') as HTMLDivElement;
   weatherWidgetContainer.innerHTML = `${weatherWidgetContainer.innerHTML}
     <div class="input-containers-container">
@@ -180,6 +191,8 @@ saveBtn.onclick = async () => {
   const searchPlaceHolderAlignment = document.getElementById('searchPlaceHolderAlignment') as HTMLInputElement;
   const showIcon = document.getElementById('showIcon') as HTMLInputElement;
 
+  const bookmarkRows = document.getElementById('bookmarkRows') as HTMLInputElement;
+
   // weather
   const degreeType = document.getElementById('degreeType') as HTMLInputElement;
   const latitude = document.getElementById('latitude') as HTMLInputElement;
@@ -206,6 +219,7 @@ saveBtn.onclick = async () => {
         )
       )
       .then(i => setValue(i, 'searchBar', 'showIcon', showIcon, showIcon.checked))
+      .then(i => setValue(i, 'bookmarksWidget', 'bookmarkRows', bookmarkRows, parseInt(bookmarkRows.value)))
       .then(i => setValue(i, 'weatherWidget', 'degreeType', degreeType, degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
       .then(i => setValue(i, 'weatherWidget', 'latitude', latitude, latitude.value))
       .then(i => setValue(i, 'weatherWidget', 'longitude', longitude, longitude.value));
