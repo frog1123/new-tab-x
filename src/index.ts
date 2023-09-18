@@ -130,7 +130,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
               </label>
             </div>
           </div>
-          
+          <div id="bookmark-grids-grid"></div>
         </div>`;
 
         break;

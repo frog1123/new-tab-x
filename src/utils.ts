@@ -100,12 +100,7 @@ const setBookmarks = (items: typeof globalThis.settings) => {
       source[i] = bookmarkItems[i];
     }
 
-    // const bookmarks = document.getElementById('bookmarks-grid') as HTMLElement;
-    const bookmarksContainer = document.getElementById('bookmarks-container') as HTMLElement;
-
-    for (let i = 0; i < items.bookmarksWidget.bookmarkRows; i++) {
-      bookmarksContainer.innerHTML = `${bookmarksContainer.innerHTML}<div id="bmk-g${i}" class="bookmarks-grid"></div>`;
-    }
+    const bookmarksContainer = document.getElementById('bookmark-grids-grid') as HTMLElement;
 
     if (source.length === 0) {
       bookmarksContainer.innerHTML = `${bookmarksContainer.innerHTML}
@@ -113,6 +108,11 @@ const setBookmarks = (items: typeof globalThis.settings) => {
         <p>You have no bookmarks</p>
       </div>
       `;
+      return;
+    }
+
+    for (let i = 0; i < items.bookmarksWidget.bookmarkRows; i++) {
+      if (source.length > i) bookmarksContainer.innerHTML = `${bookmarksContainer.innerHTML}<div id="bmk-g${i}" class="bookmarks-grid"></div>`;
     }
 
     source.forEach((item, index) => {

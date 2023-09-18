@@ -149,7 +149,6 @@ input:checked + .slider:before {
   border-radius: $border-radius;
   display: grid;
   grid-auto-flow: row;
-  gap: 6px;
 
   & #bookmarks-info {
     display: grid;
@@ -186,17 +185,24 @@ input:checked + .slider:before {
     }
   }
 
-  & .bookmarks-grid {
-    display: flex;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    gap: 10px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+  & #bookmark-grids-grid {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 6px;
+    width: 100%;
 
-    &::-webkit-scrollbar {
-      display: none;
+    & .bookmarks-grid {
+      display: flex;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      gap: 10px;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
   }
 }
