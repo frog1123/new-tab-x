@@ -31,6 +31,8 @@ globalThis.settings = {
   }
 };
 
+let els: any;
+
 chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
   console.log(items);
 
@@ -136,6 +138,30 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
       </div>
     </div>
   `;
+
+  els = {
+    // general
+    debugMode: document.getElementById('debugMode') as HTMLInputElement,
+    preferredTitle: document.getElementById('preferredTitle') as HTMLInputElement,
+    bgUrl: document.getElementById('bgUrl') as HTMLInputElement,
+    accentColor: document.getElementById('accentColor') as HTMLInputElement,
+    // mainText
+    order: document.getElementById('order') as HTMLInputElement,
+    type: document.getElementById('type') as HTMLInputElement,
+    font: document.getElementById('font') as HTMLInputElement,
+    militaryTime: document.getElementById('militaryTime') as HTMLInputElement,
+    // search
+    searchEngine: document.getElementById('searchEngine') as HTMLInputElement,
+    searchPlaceHolder: document.getElementById('searchPlaceHolder') as HTMLInputElement,
+    searchPlaceHolderAlignment: document.getElementById('searchPlaceHolderAlignment') as HTMLInputElement,
+    showIcon: document.getElementById('showIcon') as HTMLInputElement,
+    // bookmarksWidget
+    bookmarkRows: document.getElementById('bookmarkRows') as HTMLInputElement,
+    // weatherWidget
+    degreeType: document.getElementById('degreeType') as HTMLInputElement,
+    latitude: document.getElementById('latitude') as HTMLInputElement,
+    longitude: document.getElementById('longitude') as HTMLInputElement
+  };
 });
 
 const run = (v: any, f: () => void) => {
@@ -173,56 +199,33 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
 
 const saveBtn = document.getElementById('save') as HTMLButtonElement;
 saveBtn.onclick = async () => {
-  // general
-  const debugMode = document.getElementById('debugMode') as HTMLInputElement;
-  const preferredTitle = document.getElementById('preferredTitle') as HTMLInputElement;
-  const bgUrl = document.getElementById('bgUrl') as HTMLInputElement;
-  const accentColor = document.getElementById('accentColor') as HTMLInputElement;
-  const order = document.getElementById('order') as HTMLInputElement;
-
-  // mainText
-  const type = document.getElementById('type') as HTMLInputElement;
-  const font = document.getElementById('font') as HTMLInputElement;
-  const militaryTime = document.getElementById('militaryTime') as HTMLInputElement;
-
-  //searchBar
-  const searchEngine = document.getElementById('searchEngine') as HTMLInputElement;
-  const searchPlaceHolder = document.getElementById('searchPlaceHolder') as HTMLInputElement;
-  const searchPlaceHolderAlignment = document.getElementById('searchPlaceHolderAlignment') as HTMLInputElement;
-  const showIcon = document.getElementById('showIcon') as HTMLInputElement;
-
-  const bookmarkRows = document.getElementById('bookmarkRows') as HTMLInputElement;
-
-  // weather
-  const degreeType = document.getElementById('degreeType') as HTMLInputElement;
-  const latitude = document.getElementById('latitude') as HTMLInputElement;
-  const longitude = document.getElementById('longitude') as HTMLInputElement;
-
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-    setValue(items, 'general', 'debugMode', debugMode, debugMode.checked)
-      .then(i => setValue(i, 'general', 'preferredTitle', preferredTitle, preferredTitle.value))
-      .then(i => setValue(i, 'general', 'bgUrl', bgUrl, bgUrl.value))
-      .then(i => setValue(i, 'general', 'accentColor', accentColor, accentColor.value))
-      .then(i => setValue(i, 'general', 'order', order, order.value ? JSON.parse(order.value.replace(/&quot;/g, '"')) : ''))
-      .then(i => setValue(i, 'mainText', 'type', type, type.value as typeof globalThis.settings.mainText.type))
-      .then(i => setValue(i, 'mainText', 'font', font, font.value))
-      .then(i => setValue(i, 'mainText', 'militaryTime', militaryTime, militaryTime.checked))
-      .then(i => setValue(i, 'searchBar', 'searchEngine', searchEngine, searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
-      .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', searchPlaceHolder, searchPlaceHolder.value))
+    setValue(items, 'general', 'debugMode', els.debugMode, els.debugMode.checked)
+      .then(i => setValue(i, 'general', 'preferredTitle', els.preferredTitle, els.preferredTitle.value))
+      .then(i => setValue(i, 'general', 'bgUrl', els.bgUrl, els.bgUrl.value))
+      .then(i => setValue(i, 'general', 'accentColor', els.accentColor, els.accentColor.value))
+      .then(i => setValue(i, 'general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''))
+      .then(i => setValue(i, 'mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type))
+      .then(i => setValue(i, 'mainText', 'font', els.font, els.font.value))
+      .then(i => setValue(i, 'mainText', 'militaryTime', els.militaryTime, els.militaryTime.checked))
+      .then(i => setValue(i, 'searchBar', 'searchEngine', els.searchEngine, els.searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
+      .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', els.searchPlaceHolder, els.searchPlaceHolder.value))
       .then(i =>
         setValue(
           i,
           'searchBar',
           'searchPlaceHolderAlignment',
-          searchPlaceHolderAlignment,
-          searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment
+          els.searchPlaceHolderAlignment,
+          els.searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment
         )
       )
-      .then(i => setValue(i, 'searchBar', 'showIcon', showIcon, showIcon.checked))
-      .then(i => setValue(i, 'bookmarksWidget', 'bookmarkRows', bookmarkRows, parseInt(bookmarkRows.value)))
-      .then(i => setValue(i, 'weatherWidget', 'degreeType', degreeType, degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
-      .then(i => setValue(i, 'weatherWidget', 'latitude', latitude, latitude.value))
-      .then(i => setValue(i, 'weatherWidget', 'longitude', longitude, longitude.value));
+      .then(i => setValue(i, 'searchBar', 'showIcon', els.showIcon, els.showIcon.checked))
+      .then(i =>
+        setValue(i, 'bookmarksWidget', 'bookmarkRows', els.bookmarkRows, els.bookmarkRows.value ? parseInt(els.bookmarkRows.value) : items.bookmarksWidget.bookmarkRows)
+      )
+      .then(i => setValue(i, 'weatherWidget', 'degreeType', els.degreeType, els.degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
+      .then(i => setValue(i, 'weatherWidget', 'latitude', els.latitude, els.latitude.value))
+      .then(i => setValue(i, 'weatherWidget', 'longitude', els.longitude, els.longitude.value));
   });
 
   alert('options saved');
@@ -230,14 +233,62 @@ saveBtn.onclick = async () => {
 
 const exportBtn = document.getElementById('export') as HTMLButtonElement;
 exportBtn.onclick = () => {
-  // TODO later
-  alert('not implemented yet');
+  chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
+    const exportedSave = items;
+    const formattedExportedSave = `NEW_TAB_X_SAVE_FORMAT_V${chrome.runtime.getManifest().version}_${window.btoa(unescape(encodeURIComponent(JSON.stringify(exportedSave))))}`;
+
+    navigator.clipboard.writeText(formattedExportedSave);
+    alert('save copied to clipboard');
+  });
+};
+
+const setInputValue = (input: HTMLInputElement, value: any) => {
+  if (typeof value === 'boolean') input.checked = value;
+  else input.value = value;
 };
 
 const importBtn = document.getElementById('import') as HTMLButtonElement;
 importBtn.onclick = () => {
-  // TODO later
-  alert('not implemented yet');
+  const dataToImport = prompt('input your save (this will overwrite your current save)');
+  if (dataToImport === null) {
+    alert('invalid save (null)');
+    return;
+  }
+
+  const pattern = `NEW_TAB_X_SAVE_FORMAT_V${chrome.runtime.getManifest().version}_`;
+
+  if (!dataToImport.startsWith(pattern)) {
+    alert(`incorrect save version (use v${chrome.runtime.getManifest().version})`);
+    return;
+  }
+  const data: typeof globalThis.settings = JSON.parse(decodeURIComponent(escape(window.atob(dataToImport.replace(pattern, '')))));
+  console.log(data);
+
+  // general
+  setInputValue(els.debugMode, data.general.debugMode);
+  setInputValue(els.preferredTitle, data.general.preferredTitle);
+  setInputValue(els.bgUrl, data.general.bgUrl);
+  setInputValue(els.accentColor, data.general.accentColor);
+  setInputValue(els.order, JSON.stringify(data.general.order));
+
+  // mainText
+  setInputValue(els.type, data.mainText.type);
+  setInputValue(els.font, data.mainText.font);
+  setInputValue(els.militaryTime, data.mainText.militaryTime);
+
+  // searchBar
+  setInputValue(els.searchEngine, data.searchBar.searchEngine);
+  setInputValue(els.searchPlaceHolder, data.searchBar.searchPlaceHolder);
+  setInputValue(els.searchPlaceHolderAlignment, data.searchBar.searchPlaceHolderAlignment);
+  setInputValue(els.showIcon, data.searchBar.showIcon);
+
+  // bookmarksWidget
+  setInputValue(els.bookmarkRows, data.bookmarksWidget.bookmarkRows);
+
+  // weatherWidget
+  setInputValue(els.degreeType, data.weatherWidget.degreeType);
+  setInputValue(els.latitude, data.weatherWidget.latitude);
+  setInputValue(els.longitude, data.weatherWidget.longitude);
 };
 
 const hiddenElements = document.querySelectorAll('.hidden-text');
