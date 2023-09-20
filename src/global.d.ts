@@ -11,6 +11,7 @@ declare global {
       type: 'time' | 'date';
       font: string;
       militaryTime: boolean;
+      includeSeconds: boolean;
     };
     searchBar: {
       searchEngine: 'google' | 'duckduckgo' | 'bing' | 'yahoo';

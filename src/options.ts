@@ -9,7 +9,8 @@ globalThis.settings = {
   mainText: {
     type: 'date',
     font: 'Monaco, monospace',
-    militaryTime: true
+    militaryTime: true,
+    includeSeconds: false
   },
   searchBar: {
     searchEngine: 'duckduckgo',
@@ -83,6 +84,13 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
           <span class="slider"></span>
         </label>
       </div>
+      <div class="input-container-toggle">
+        <p>include seconds</p>
+        <label class="switch">
+          <input type="checkbox" id="includeSeconds" ${items.mainText.includeSeconds ? 'checked' : ''}>
+          <span class="slider"></span>
+      </label>
+    </div>
     </div>
   `;
 
@@ -150,6 +158,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     type: document.getElementById('type') as HTMLInputElement,
     font: document.getElementById('font') as HTMLInputElement,
     militaryTime: document.getElementById('militaryTime') as HTMLInputElement,
+    includeSeconds: document.getElementById('includeSeconds') as HTMLInputElement,
     // search
     searchEngine: document.getElementById('searchEngine') as HTMLInputElement,
     searchPlaceHolder: document.getElementById('searchPlaceHolder') as HTMLInputElement,
@@ -197,8 +206,7 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
   });
 };
 
-const saveBtn = document.getElementById('save') as HTMLButtonElement;
-saveBtn.onclick = async () => {
+const saveFunction = () => {
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
     setValue(items, 'general', 'debugMode', els.debugMode, els.debugMode.checked)
       .then(i => setValue(i, 'general', 'preferredTitle', els.preferredTitle, els.preferredTitle.value))
@@ -208,6 +216,7 @@ saveBtn.onclick = async () => {
       .then(i => setValue(i, 'mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type))
       .then(i => setValue(i, 'mainText', 'font', els.font, els.font.value))
       .then(i => setValue(i, 'mainText', 'militaryTime', els.militaryTime, els.militaryTime.checked))
+      .then(i => setValue(i, 'mainText', 'includeSeconds', els.includeSeconds, els.includeSeconds.checked))
       .then(i => setValue(i, 'searchBar', 'searchEngine', els.searchEngine, els.searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
       .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', els.searchPlaceHolder, els.searchPlaceHolder.value))
       .then(i =>
@@ -226,13 +235,17 @@ saveBtn.onclick = async () => {
       .then(i => setValue(i, 'weatherWidget', 'degreeType', els.degreeType, els.degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
       .then(i => setValue(i, 'weatherWidget', 'latitude', els.latitude, els.latitude.value))
       .then(i => setValue(i, 'weatherWidget', 'longitude', els.longitude, els.longitude.value));
-  });
 
-  alert('options saved');
+    alert('options saved');
+  });
 };
 
-const exportBtn = document.getElementById('export') as HTMLButtonElement;
-exportBtn.onclick = () => {
+const saveBtn = document.getElementById('save') as HTMLButtonElement;
+saveBtn.onclick = async () => {
+  saveFunction();
+};
+
+const exportFunction = () => {
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
     const exportedSave = items;
     const formattedExportedSave = `NEW_TAB_X_SAVE_FORMAT_V${chrome.runtime.getManifest().version}_${window.btoa(unescape(encodeURIComponent(JSON.stringify(exportedSave))))}`;
@@ -242,13 +255,15 @@ exportBtn.onclick = () => {
   });
 };
 
+const exportBtn = document.getElementById('export') as HTMLButtonElement;
+exportBtn.onclick = () => exportFunction();
+
 const setInputValue = (input: HTMLInputElement, value: any) => {
   if (typeof value === 'boolean') input.checked = value;
   else input.value = value;
 };
 
-const importBtn = document.getElementById('import') as HTMLButtonElement;
-importBtn.onclick = () => {
+const importFunction = () => {
   const dataToImport = prompt('input your save (this will overwrite your current save)');
   if (dataToImport === null) {
     alert('invalid save (null)');
@@ -275,6 +290,7 @@ importBtn.onclick = () => {
   setInputValue(els.type, data.mainText.type);
   setInputValue(els.font, data.mainText.font);
   setInputValue(els.militaryTime, data.mainText.militaryTime);
+  setInputValue(els.includeSeconds, data.mainText.includeSeconds);
 
   // searchBar
   setInputValue(els.searchEngine, data.searchBar.searchEngine);
@@ -289,6 +305,40 @@ importBtn.onclick = () => {
   setInputValue(els.degreeType, data.weatherWidget.degreeType);
   setInputValue(els.latitude, data.weatherWidget.latitude);
   setInputValue(els.longitude, data.weatherWidget.longitude);
+};
+
+const importBtn = document.getElementById('import') as HTMLButtonElement;
+importBtn.onclick = () => importFunction();
+
+document.onkeydown = e => {
+  e = e || window.event;
+
+  // u - top
+  // d - bottom
+  // s - save
+  // e - export
+  // i - import
+
+  if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+    e.preventDefault();
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    saveFunction();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+    e.preventDefault();
+    exportFunction();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+    e.preventDefault();
+    importFunction();
+  }
 };
 
 const hiddenElements = document.querySelectorAll('.hidden-text');

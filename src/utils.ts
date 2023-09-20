@@ -64,7 +64,7 @@ const runClock = (items: typeof globalThis.settings, type: 'time' | 'date') => {
       let nHours;
       if (parseInt(hours) > 12) nHours = parseInt(hours) - 12;
 
-      mainText.textContent = `${day} ${items.mainText.militaryTime === false ? nHours : hours}:${minutes}:${seconds} ${
+      mainText.textContent = `${day} ${items.mainText.militaryTime === false ? nHours : hours}:${minutes}${items.mainText.includeSeconds ? `:${seconds}` : ''} ${
         items.mainText.militaryTime === false ? (parseInt(hours) > 12 ? 'PM' : 'AM') : ''
       }`;
     };

@@ -9,13 +9,14 @@ globalThis.settings = {
   mainText: {
     type: 'date',
     font: 'Monaco, monospace',
-    militaryTime: false
+    militaryTime: true,
+    includeSeconds: false
   },
   searchBar: {
     searchEngine: 'duckduckgo',
     searchPlaceHolder: 'search',
     searchPlaceHolderAlignment: 'ltr',
-    showIcon: true
+    showIcon: false
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true,
@@ -30,7 +31,6 @@ globalThis.settings = {
     longitude: '-73.935242'
   }
 };
-
 // https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
 // https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images
 
