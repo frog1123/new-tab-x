@@ -7,9 +7,13 @@ not on chrome webstore yet (you can try the developer build by using the new-tab
 
 <div align="center">
   
-  <img src="example-1.png">
+  <img src="example-01.png">
 
-  <img src="example-2.png">
+  <img src="example-02.png">
+
+  <img src="example-03.png">
+
+  <img src="example-04.png">
   
 </div>
 
