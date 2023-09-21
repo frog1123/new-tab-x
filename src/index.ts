@@ -2,7 +2,7 @@ globalThis.settings = {
   general: {
     debugMode: true,
     preferredTitle: 'new tab x',
-    bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
+    bgUrl: 'bg-1.png',
     accentColor: '#8898de',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
   },
@@ -21,7 +21,7 @@ globalThis.settings = {
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true,
-    bookmarkRows: 2
+    bookmarkRows: 1
   },
   notesWidget: {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'
@@ -34,7 +34,6 @@ globalThis.settings = {
 };
 
 // https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
-// https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images
 
 chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async items => {
   inital(items);

@@ -2,7 +2,7 @@ globalThis.settings = {
   general: {
     debugMode: true,
     preferredTitle: 'new tab x',
-    bgUrl: 'https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg',
+    bgUrl: 'bg-1.png',
     accentColor: '#8898de',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
   },
@@ -21,7 +21,7 @@ globalThis.settings = {
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true,
-    bookmarkRows: 2
+    bookmarkRows: 1
   },
   notesWidget: {
     notesValue: 'tip: click extensions > new tab x > settings to customize this tab 🚀'

@@ -15,6 +15,10 @@ const duckduckgo = readFileSync(join(__dirname, '..', 'assets', 's_icons', 'duck
 const bing = readFileSync(join(__dirname, '..', 'assets', 's_icons', 'bing.png'));
 const yahoo = readFileSync(join(__dirname, '..', 'assets', 's_icons', 'yahoo.png'));
 
+const bg1 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-1.png'));
+const bg2 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-2.png'));
+const bg3 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-3.png'));
+
 try {
   writeFileSync(join(__dirname, '..', destination, 'crosshair.svg'), cursor);
   writeFileSync(join(__dirname, '..', destination, 'up_arrow.svg'), upArrow);
@@ -26,6 +30,10 @@ try {
   writeFileSync(join(__dirname, '..', destination, 'duckduckgo.png'), duckduckgo);
   writeFileSync(join(__dirname, '..', destination, 'bing.png'), bing);
   writeFileSync(join(__dirname, '..', destination, 'yahoo.png'), yahoo);
+
+  writeFileSync(join(__dirname, '..', destination, 'bg-1.png'), bg1);
+  writeFileSync(join(__dirname, '..', destination, 'bg-2.png'), bg2);
+  writeFileSync(join(__dirname, '..', destination, 'bg-3.png'), bg3);
 
   console.log(`${chalk.green('✔')} created assets`);
 } catch (err) {
