@@ -29,6 +29,7 @@ const inital = (items: typeof globalThis.settings) => {
 
 const search = (items: typeof globalThis.settings, e: KeyboardEvent) => {
   const searchBar = document.getElementById('search') as HTMLInputElement;
+  if (searchBar.value === '') return;
 
   if (e.key === 'Enter') {
     switch (items.searchBar.searchEngine) {

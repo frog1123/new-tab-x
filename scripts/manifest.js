@@ -6,7 +6,7 @@ const destination = process.argv[2].replace(/--destination=/, '');
 
 const config = {
   manifest_version: 3,
-  version: '1.0.0',
+  version: '1.0.1',
   name: `new tab x ${destination === 'final' ? '' : '(dev)'}`,
   author: 'frog1123',
   description: 'new tab x',
