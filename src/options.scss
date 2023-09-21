@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+* {
+  transition-duration: 250ms;
+}
+
 html,
 body {
   background-color: #0c0c0c;
@@ -20,6 +24,11 @@ p {
 
 .title-p {
   color: gray;
+  font-size: 24px;
+
+  @media screen and (max-width: 650px) {
+    font-size: 16px;
+  }
 }
 
 ::selection {
@@ -49,6 +58,15 @@ p {
   grid-gap: 10px;
   place-items: center;
 
+  @media screen and (max-width: 850px) {
+    width: 600px;
+  }
+
+  @media screen and (max-width: 650px) {
+    gap: 6px;
+    width: 400px;
+  }
+
   & h1 {
     margin: 0;
   }
@@ -61,6 +79,11 @@ p {
 #logo {
   width: 200px;
   height: 200px;
+
+  @media screen and (max-width: 650px) {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 #title-text {
@@ -77,6 +100,14 @@ p {
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 32px;
+
+    @media screen and (max-width: 850px) {
+      font-size: 28px;
+    }
+
+    @media screen and (max-width: 650px) {
+      font-size: 24px;
+    }
   }
 }
 
@@ -119,7 +150,6 @@ p {
 #import {
   margin-top: 10px;
   color: #fff;
-  font-size: 24px;
   border: none;
   width: max-content;
   height: max-content;
@@ -131,6 +161,10 @@ p {
   & p {
     font-size: 24px;
     margin: 0;
+
+    @media screen and (max-width: 650px) {
+      font-size: 16px;
+    }
   }
 
   &:hover {
@@ -182,27 +216,49 @@ p {
   grid-template-rows: max-content max-content;
   grid-gap: 6px;
   place-items: center;
+  font-size: 32px;
+
+  @media screen and (max-width: 650px) {
+    font-size: 28px;
+  }
 
   & div {
     display: grid;
     grid-template-columns: max-content max-content;
-    grid-gap: 6px;
+    gap: 6px;
     place-items: center;
+
+    @media screen and (max-width: 650px) {
+      gap: 4px;
+    }
 
     & img {
       width: 24px;
       height: 24px;
+
+      @media screen and (max-width: 650px) {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     & p {
       font-size: 28px;
       color: #494949;
+
+      @media screen and (max-width: 650px) {
+        font-size: 20px;
+      }
     }
   }
 
   & p {
     font-size: 16px;
     color: #494949;
+
+    @media screen and (max-width: 650px) {
+      font-size: 12px;
+    }
   }
 }
 
@@ -217,10 +273,17 @@ p {
   display: grid;
   grid-auto-flow: column;
   grid-gap: 10px;
+  place-items: center;
 
   & p {
     margin: 0;
     margin-right: auto !important;
+    font-size: 24px;
+    margin: 0;
+
+    @media screen and (max-width: 650px) {
+      font-size: 16px;
+    }
   }
 
   & input {
@@ -239,6 +302,11 @@ p {
     user-select: none;
     box-sizing: border-box;
 
+    @media screen and (max-width: 650px) {
+      height: 24px;
+      font-size: 16px;
+    }
+
     &::placeholder {
       color: #494949;
     }
@@ -249,10 +317,17 @@ p {
   display: grid;
   grid-auto-flow: row;
   grid-gap: 10px;
+  place-items: center;
 
   & p {
     margin: 0;
     margin-right: auto !important;
+    font-size: 24px;
+    margin: 0;
+
+    @media screen and (max-width: 650px) {
+      font-size: 16px;
+    }
   }
 
   & input {
@@ -270,6 +345,11 @@ p {
     user-select: none;
     box-sizing: border-box;
 
+    @media screen and (max-width: 650px) {
+      height: 24px;
+      font-size: 16px;
+    }
+
     &::placeholder {
       color: #494949;
     }
@@ -281,10 +361,21 @@ p {
   grid-auto-flow: column;
   grid-gap: 10px;
   place-items: center;
+  height: 28px;
+
+  @media screen and (max-width: 650px) {
+    height: 24px;
+  }
 
   & p {
     margin: 0;
     margin-right: auto !important;
+    font-size: 24px;
+    margin: 0;
+
+    @media screen and (max-width: 650px) {
+      font-size: 16px;
+    }
   }
 
   & label {
@@ -317,6 +408,11 @@ p {
   display: inline-block;
   width: 45px;
   height: 25.5px;
+
+  @media screen and (max-width: 650px) {
+    width: 30px;
+    height: 17px;
+  }
 }
 
 .switch input {
@@ -336,6 +432,10 @@ p {
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 25.5px;
+
+  @media screen and (max-width: 650px) {
+    border-radius: 17px;
+  }
 }
 
 .slider:before {
@@ -349,12 +449,25 @@ p {
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 50%;
+
+  @media screen and (max-width: 650px) {
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+  }
 }
 
 input:checked + .slider:before {
   -webkit-transform: translateX(19.5px);
   -ms-transform: translateX(19.5px);
   transform: translateX(19.5px);
+
+  @media screen and (max-width: 650px) {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
 }
 
 input:checked + .slider {
