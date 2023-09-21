@@ -8,7 +8,8 @@ declare global {
       order: (string | [string, string])[];
     };
     mainText: {
-      type: 'time' | 'date';
+      type: 'time' | 'date' | 'custom';
+      customText: string;
       font: string;
       militaryTime: boolean;
       includeSeconds: boolean;

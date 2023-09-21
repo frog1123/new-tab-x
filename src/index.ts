@@ -7,7 +7,8 @@ globalThis.settings = {
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
   },
   mainText: {
-    type: 'date',
+    type: 'custom',
+    customText: 'hello',
     font: 'Monaco, monospace',
     militaryTime: true,
     includeSeconds: false
@@ -31,6 +32,7 @@ globalThis.settings = {
     longitude: '-73.935242'
   }
 };
+
 // https://images.hdqwalls.com/wallpapers/anime-night-scenery-8r.jpg
 // https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F06%2FWater-Clouds-Nature-Rivers-HD-Wallpaper-1920x1080.jpg&f=1&nofb=1&ipt=e72add54ea927026a6ff29f24be88d867b5b3a5e8cf7b49e94c080de9fe68940&ipo=images
 
@@ -79,13 +81,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
         container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el" style="transition-delay: ${delay};">...</h1>`;
         (document.getElementById('main-text') as HTMLElement).style.fontFamily = items.mainText.font;
 
-        if (items.mainText.type === 'time') {
-          runClock(items, 'time');
-        }
-
-        if (items.mainText.type === 'date') {
-          runClock(items, 'date');
-        }
+        runClock(items);
 
         break;
       }

@@ -48,11 +48,18 @@ const search = (items: typeof globalThis.settings, e: KeyboardEvent) => {
   }
 };
 
-const runClock = (items: typeof globalThis.settings, type: 'time' | 'date') => {
+const runClock = (items: typeof globalThis.settings) => {
+  const type = items.mainText.type;
+
+  if (type === 'custom') {
+    const mainText = document.getElementById('main-text') as HTMLElement;
+    mainText.textContent = items.mainText.customText;
+    return;
+  }
+
   if (type === 'time') {
     const timeLogic = () => {
       const mainText = document.getElementById('main-text') as HTMLElement;
-
       const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const d = new Date();
       let day = weekday[d.getDay()];
@@ -77,7 +84,6 @@ const runClock = (items: typeof globalThis.settings, type: 'time' | 'date') => {
   if (type === 'date') {
     const dateLogic = () => {
       const mainText = document.getElementById('main-text') as HTMLElement;
-
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 

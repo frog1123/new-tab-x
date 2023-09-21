@@ -7,7 +7,8 @@ globalThis.settings = {
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
   },
   mainText: {
-    type: 'date',
+    type: 'custom',
+    customText: 'hello',
     font: 'Monaco, monospace',
     militaryTime: true,
     includeSeconds: false
@@ -70,12 +71,16 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
   mainTextContainer.innerHTML = `${mainTextContainer.innerHTML}
     <div class="input-containers-container">
       <div class="input-container">
-        <p>type (time | date)</p>
+        <p>type (time | date | custom)</p>
         <input id="type" placeholder="${items.mainText.type}">
       </div>
       <div class="input-container-large">
         <p>font</p>
         <input id="font" placeholder="${items.mainText.font}">
+      </div>
+      <div class="input-container-large">
+        <p>custom text</p>
+        <input id="customText" placeholder="${items.mainText.customText}">
       </div>
       <div class="input-container-toggle">
         <p>military time</p>
@@ -157,6 +162,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     order: document.getElementById('order') as HTMLInputElement,
     type: document.getElementById('type') as HTMLInputElement,
     font: document.getElementById('font') as HTMLInputElement,
+    customText: document.getElementById('customText') as HTMLInputElement,
     militaryTime: document.getElementById('militaryTime') as HTMLInputElement,
     includeSeconds: document.getElementById('includeSeconds') as HTMLInputElement,
     // search
@@ -215,6 +221,7 @@ const saveFunction = () => {
       .then(i => setValue(i, 'general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''))
       .then(i => setValue(i, 'mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type))
       .then(i => setValue(i, 'mainText', 'font', els.font, els.font.value))
+      .then(i => setValue(i, 'mainText', 'customText', els.customText, els.customText.value))
       .then(i => setValue(i, 'mainText', 'militaryTime', els.militaryTime, els.militaryTime.checked))
       .then(i => setValue(i, 'mainText', 'includeSeconds', els.includeSeconds, els.includeSeconds.checked))
       .then(i => setValue(i, 'searchBar', 'searchEngine', els.searchEngine, els.searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
@@ -289,6 +296,7 @@ const importFunction = () => {
   // mainText
   setInputValue(els.type, data.mainText.type);
   setInputValue(els.font, data.mainText.font);
+  setInputValue(els.customText, data.mainText.customText);
   setInputValue(els.militaryTime, data.mainText.militaryTime);
   setInputValue(els.includeSeconds, data.mainText.includeSeconds);
 
