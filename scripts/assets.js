@@ -18,6 +18,7 @@ const yahoo = readFileSync(join(__dirname, '..', 'assets', 's_icons', 'yahoo.png
 const bg1 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-1.png'));
 const bg2 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-2.png'));
 const bg3 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-3.png'));
+const bg4 = readFileSync(join(__dirname, '..', 'assets', 'bg', 'bg-4.png'));
 
 try {
   writeFileSync(join(__dirname, '..', destination, 'crosshair.svg'), cursor);
@@ -34,6 +35,7 @@ try {
   writeFileSync(join(__dirname, '..', destination, 'bg-1.png'), bg1);
   writeFileSync(join(__dirname, '..', destination, 'bg-2.png'), bg2);
   writeFileSync(join(__dirname, '..', destination, 'bg-3.png'), bg3);
+  writeFileSync(join(__dirname, '..', destination, 'bg-4.png'), bg4);
 
   console.log(`${chalk.green('✔')} created assets`);
 } catch (err) {
