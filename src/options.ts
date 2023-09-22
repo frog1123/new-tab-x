@@ -7,7 +7,7 @@ globalThis.settings = {
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
   },
   mainText: {
-    type: 'custom',
+    type: 'time',
     customText: 'hello',
     font: 'Monaco, monospace',
     militaryTime: true,

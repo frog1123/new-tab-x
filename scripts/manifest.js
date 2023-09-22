@@ -14,13 +14,6 @@ const config = {
   chrome_url_overrides: {
     newtab: 'index.html'
   },
-  content_scripts: [
-    {
-      matches: ['http://*/'],
-      js: ['index.js'],
-      css: ['styles.css']
-    }
-  ],
   icons: {
     16: '16.png',
     32: '32.png',
