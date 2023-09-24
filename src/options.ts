@@ -52,6 +52,12 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
         <p>preferred title</p>
         <input id="preferredTitle" placeholder="${items.general.preferredTitle}">
       </div>
+      <div class="bg-container">
+        <div id="bg-opt1"><img src="bg-1.png"></div>
+        <div id="bg-opt2"><img src="bg-2.png"></div>
+        <div id="bg-opt3"><img src="bg-3.png"></div>
+        <div id="bg-opt4"><img src="bg-4.png"></div>
+      </div>
       <div class="input-container-large">
         <p>background url</p>
         <input id="bgUrl" placeholder="${items.general.bgUrl}">
@@ -66,6 +72,21 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
       </div>
     </div>
   `;
+
+  const setBg = (id: string) => {
+    const el = document.getElementById(id) as HTMLDivElement;
+    const other = ['bg-opt1', 'bg-opt2', 'bg-opt3', 'bg-opt4'];
+    other.forEach(el => (document.getElementById(el)!.style.border = 'solid #00000000'));
+    const bgSrc = (document.querySelector(`#${id} img`) as HTMLImageElement)!.src;
+
+    (document.getElementById('bgUrl') as HTMLInputElement)!.value = bgSrc;
+    el.style.border = 'solid #6fedd6';
+  };
+
+  document.getElementById('bg-opt1')!.onclick = () => setBg('bg-opt1');
+  document.getElementById('bg-opt2')!.onclick = () => setBg('bg-opt2');
+  document.getElementById('bg-opt3')!.onclick = () => setBg('bg-opt3');
+  document.getElementById('bg-opt4')!.onclick = () => setBg('bg-opt4');
 
   const mainTextContainer = document.getElementById('main-text-container') as HTMLDivElement;
   mainTextContainer.innerHTML = `${mainTextContainer.innerHTML}

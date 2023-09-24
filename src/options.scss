@@ -383,6 +383,36 @@ p {
   }
 }
 
+.bg-container {
+  display: grid;
+  place-items: center;
+  width: inherit;
+  grid-auto-flow: column;
+  gap: 6px;
+  grid-template-columns: repeat(4, 1fr);
+  box-sizing: border-box !important;
+
+  @media screen and (max-width: 650px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: row;
+  }
+
+  & div {
+    overflow: hidden;
+    border-radius: 10px;
+    border: solid #00000000;
+    cursor: pointer;
+
+    & img {
+      width: 100%;
+
+      &:hover {
+        transform: scale(1.25);
+      }
+    }
+  }
+}
+
 #hotkeys-note {
   display: grid;
   grid-template-columns: repeat(4, max-content);
