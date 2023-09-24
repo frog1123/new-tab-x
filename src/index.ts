@@ -4,7 +4,8 @@ globalThis.settings = {
     preferredTitle: 'new tab x',
     bgUrl: 'bg-1.png',
     accentColor: '#8898de',
-    order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
+    order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
+    animationSpeed: 1
   },
   mainText: {
     type: 'time',
@@ -40,7 +41,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
 
   const container = document.getElementById('container') as HTMLDivElement;
   items.general.order.forEach((type: string | [string, string], index: number) => {
-    const delay = index * 50 + 'ms';
+    const delay = index * 50 * items.general.animationSpeed + 'ms';
 
     if (type instanceof Array) {
       container.innerHTML = `${container.innerHTML}<div id="d${index}-container" class="double-container"></div>`;

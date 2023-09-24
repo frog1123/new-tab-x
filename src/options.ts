@@ -4,7 +4,8 @@ globalThis.settings = {
     preferredTitle: 'new tab x',
     bgUrl: 'bg-1.png',
     accentColor: '#8898de',
-    order: ['main', 'search', 'bookmarks', ['notes', 'weather']]
+    order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
+    animationSpeed: 1
   },
   mainText: {
     type: 'time',
@@ -33,7 +34,7 @@ globalThis.settings = {
   }
 };
 
-let els: any;
+let els: { [key: string]: HTMLInputElement };
 
 chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
   console.log(items);
@@ -69,6 +70,10 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
       <div class="input-container-large">
         <p>order</p>
         <input id="order" placeholder="${JSON.stringify(items.general.order).replace(/"/g, '&quot;')}">
+      </div>
+      <div class="input-container">
+        <p>animation speed</p>
+        <input id="animationSpeed" placeholder="${items.general.animationSpeed}">
       </div>
     </div>
   `;
@@ -179,8 +184,9 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     preferredTitle: document.getElementById('preferredTitle') as HTMLInputElement,
     bgUrl: document.getElementById('bgUrl') as HTMLInputElement,
     accentColor: document.getElementById('accentColor') as HTMLInputElement,
-    // mainText
+    animationSpeed: document.getElementById('animationSpeed') as HTMLInputElement,
     order: document.getElementById('order') as HTMLInputElement,
+    // mainText
     type: document.getElementById('type') as HTMLInputElement,
     font: document.getElementById('font') as HTMLInputElement,
     customText: document.getElementById('customText') as HTMLInputElement,
@@ -238,6 +244,8 @@ const saveFunction = () => {
       .then(i => setValue(i, 'general', 'bgUrl', els.bgUrl, els.bgUrl.value))
       .then(i => setValue(i, 'general', 'accentColor', els.accentColor, els.accentColor.value))
       .then(i => setValue(i, 'general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''))
+      .then(i => setValue(i, 'general', 'animationSpeed', els.animationSpeed, parseFloat(els.animationSpeed.value)))
+      .then(i => setValue(i, 'general', 'accentColor', els.animationSpeed, els.animationSpeed.value))
       .then(i => setValue(i, 'mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type))
       .then(i => setValue(i, 'mainText', 'font', els.font, els.font.value))
       .then(i => setValue(i, 'mainText', 'customText', els.customText, els.customText.value))
@@ -311,6 +319,7 @@ const importFunction = () => {
   setInputValue(els.bgUrl, data.general.bgUrl);
   setInputValue(els.accentColor, data.general.accentColor);
   setInputValue(els.order, JSON.stringify(data.general.order));
+  setInputValue(els.animationSpeed, data.general.animationSpeed);
 
   // mainText
   setInputValue(els.type, data.mainText.type);

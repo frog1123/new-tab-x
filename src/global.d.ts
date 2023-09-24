@@ -6,6 +6,7 @@ declare global {
       bgUrl: string;
       accentColor: string;
       order: (string | [string, string])[];
+      animationSpeed: number;
     };
     mainText: {
       type: 'time' | 'date' | 'custom';
