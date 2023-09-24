@@ -184,8 +184,6 @@ const run = (v: any, f: () => void) => {
   if (v !== null && v !== undefined && v !== '') f();
 };
 
-// type Property = (typeof globalThis.settings)['general'];
-
 const setValue = async <T extends keyof typeof globalThis.settings, K extends keyof (typeof globalThis.settings)[T]>(
   items: typeof globalThis.settings,
   category: T,

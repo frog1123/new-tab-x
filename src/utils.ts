@@ -69,7 +69,7 @@ const runClock = (items: typeof globalThis.settings) => {
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
 
-      let nHours;
+      let nHours = parseInt(hours);
       if (parseInt(hours) > 12) nHours = parseInt(hours) - 12;
 
       mainText.textContent = `${day} ${items.mainText.militaryTime === false ? nHours : hours}:${minutes}${items.mainText.includeSeconds ? `:${seconds}` : ''} ${
