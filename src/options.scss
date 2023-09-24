@@ -391,6 +391,8 @@ p {
   gap: 6px;
   grid-template-columns: repeat(4, 1fr);
   box-sizing: border-box !important;
+  padding-top: 2px;
+  padding-bottom: 2px;
 
   @media screen and (max-width: 650px) {
     grid-template-columns: repeat(2, 1fr);
@@ -402,6 +404,8 @@ p {
     border-radius: 10px;
     border: solid #00000000;
     cursor: pointer;
+    display: grid;
+    place-items: center;
 
     & img {
       width: 100%;
