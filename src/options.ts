@@ -250,7 +250,7 @@ const saveFunction = () => {
       .then(i => setValue(i, 'general', 'bgUrl', els.bgUrl, els.bgUrl.value))
       .then(i => setValue(i, 'general', 'accentColor', els.accentColor, els.accentColor.value))
       .then(i => setValue(i, 'general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''))
-      .then(i => setValue(i, 'general', 'animationSpeed', els.animationSpeed, parseFloat(els.animationSpeed.value)))
+      .then(i => setValue(i, 'general', 'animationSpeed', els.animationSpeed, els.animationSpeed.value ? parseFloat(els.animationSpeed.value) : items.general.animationSpeed))
       .then(i => setValue(i, 'general', 'accentColor', els.animationSpeed, els.animationSpeed.value))
       .then(i => setValue(i, 'mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type))
       .then(i => setValue(i, 'mainText', 'font', els.font, els.font.value))
