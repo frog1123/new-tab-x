@@ -78,9 +78,10 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     </div>
   `;
 
+  const other = ['bg-opt1', 'bg-opt2', 'bg-opt3', 'bg-opt4'];
+
   const setBg = (id: string) => {
     const el = document.getElementById(id) as HTMLDivElement;
-    const other = ['bg-opt1', 'bg-opt2', 'bg-opt3', 'bg-opt4'];
     other.forEach(el => (document.getElementById(el)!.style.border = 'solid #00000000'));
     const bgSrc = (document.querySelector(`#${id} img`) as HTMLImageElement)!.src;
 
@@ -92,6 +93,11 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
   document.getElementById('bg-opt2')!.onclick = () => setBg('bg-opt2');
   document.getElementById('bg-opt3')!.onclick = () => setBg('bg-opt3');
   document.getElementById('bg-opt4')!.onclick = () => setBg('bg-opt4');
+
+  other.forEach(el => {
+    const bgSrc = (document.querySelector(`#${el} img`) as HTMLImageElement)!.src;
+    if (items.general.bgUrl === bgSrc) (document.getElementById(el) as HTMLDivElement).style.border = 'solid #6fedd6';
+  });
 
   const mainTextContainer = document.getElementById('main-text-container') as HTMLDivElement;
   mainTextContainer.innerHTML = `${mainTextContainer.innerHTML}
