@@ -1,15 +1,15 @@
 globalThis.settings = {
   general: {
-    debugMode: true,
+    debugMode: false,
     preferredTitle: 'new tab x',
-    bgUrl: 'bg-1.png',
+    bgUrl: `chrome-extension://${chrome.runtime.id}/bg-1.png`,
     accentColor: '#8898de',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
     animationSpeed: 1
   },
   mainText: {
     type: 'time',
-    customText: 'hello',
+    customText: 'custom text',
     font: 'Monaco, monospace',
     militaryTime: true,
     includeSeconds: false
@@ -18,7 +18,7 @@ globalThis.settings = {
     searchEngine: 'duckduckgo',
     searchPlaceHolder: 'search',
     searchPlaceHolderAlignment: 'ltr',
-    showIcon: false
+    showIcon: true
   },
   bookmarksWidget: {
     openBookmarkInNewTab: true,
