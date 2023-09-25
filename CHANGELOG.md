@@ -1,5 +1,1 @@
-v1.0.1 -> v1.0.2
-
-- fixed military time setting
-- added background presets
-- added animation speed setting
+v1.0.2 -> v1.0.3

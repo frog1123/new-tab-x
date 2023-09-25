@@ -1,3 +1,1 @@
 - add more customizability
-- add stock widget
-- add animation speed
