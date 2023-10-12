@@ -5,6 +5,7 @@ declare global {
       preferredTitle: string;
       bgUrl: string;
       accentColor: string;
+      highlightColor: string;
       order: (string | [string, string])[];
       animationSpeed: number;
     };

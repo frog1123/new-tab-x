@@ -4,6 +4,7 @@ globalThis.settings = {
     preferredTitle: 'new tab x',
     bgUrl: `chrome-extension://${chrome.runtime.id}/bg-1.png`,
     accentColor: '#8898de',
+    highlightColor: '#6fedd680',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
     animationSpeed: 1
   },

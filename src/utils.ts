@@ -20,10 +20,15 @@ const inital = (items: typeof globalThis.settings) => {
   document.title = items.general.preferredTitle;
   (document.querySelector('body') as HTMLElement).style.background = `url(${items.general.bgUrl}) center / cover no-repeat fixed`;
 
+  const html = document.querySelector('html') as HTMLElement;
+  html.setAttribute('extension-id', chrome.runtime.id);
+  html.setAttribute('extension-version', chrome.runtime.getManifest().version);
+
   const style = document.createElement('style');
   style.type = 'text/css';
   style.innerHTML = `${style.innerHTML}input:checked + .slider { background-color: ${items.general.accentColor}; }`;
   style.innerHTML = `${style.innerHTML}input:focus + .slider { box-shadow: 0 0 1px ${items.general.accentColor}; }`;
+  style.innerHTML = `${style.innerHTML}::selection { background: ${items.general.highlightColor} }`;
   document.head.appendChild(style);
 };
 

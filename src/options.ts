@@ -4,13 +4,14 @@ globalThis.settings = {
     preferredTitle: 'new tab x',
     bgUrl: `chrome-extension://${chrome.runtime.id}/bg-1.png`,
     accentColor: '#8898de',
+    highlightColor: '#6fedd680',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
     animationSpeed: 1
   },
   mainText: {
     type: 'time',
     customText: 'custom text',
-    font: 'Monaco, monospace',
+    font: `'Orbitron', monospace'`,
     militaryTime: true,
     includeSeconds: false
   },
@@ -53,11 +54,17 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
         <p>preferred title</p>
         <input id="preferredTitle" placeholder="${items.general.preferredTitle}">
       </div>
+      <div class="sm-info"> 
+          <p>Presets |&nbsp;</p>
+          <img src="up_arrow.svg" />
+        <p>&nbsp;SHIFT + scroll</p>
+      </div>
       <div class="bg-container">
         <div id="bg-opt1"><img src="bg-1.png"></div>
         <div id="bg-opt2"><img src="bg-2.png"></div>
         <div id="bg-opt3"><img src="bg-3.png"></div>
         <div id="bg-opt4"><img src="bg-4.png"></div>
+        <div id="bg-opt5"><img src="bg-5.png"></div>
       </div>
       <div class="input-container-large">
         <p>background url</p>
@@ -82,17 +89,18 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
 
   const setBg = (id: string) => {
     const el = document.getElementById(id) as HTMLDivElement;
-    other.forEach(el => (document.getElementById(el)!.style.border = 'solid #00000000'));
+    other.forEach(el => (document.getElementById(el)!.style.border = '4px solid gray'));
     const bgSrc = (document.querySelector(`#${id} img`) as HTMLImageElement)!.src;
 
     (document.getElementById('bgUrl') as HTMLInputElement)!.value = bgSrc;
-    el.style.border = 'solid #6fedd6';
+    el.style.border = '4px solid #6fedd6';
   };
 
   document.getElementById('bg-opt1')!.onclick = () => setBg('bg-opt1');
   document.getElementById('bg-opt2')!.onclick = () => setBg('bg-opt2');
   document.getElementById('bg-opt3')!.onclick = () => setBg('bg-opt3');
   document.getElementById('bg-opt4')!.onclick = () => setBg('bg-opt4');
+  document.getElementById('bg-opt5')!.onclick = () => setBg('bg-opt5');
 
   other.forEach(el => {
     const bgSrc = (document.querySelector(`#${el} img`) as HTMLImageElement)!.src;
@@ -245,36 +253,39 @@ const setValue = async <T extends keyof typeof globalThis.settings, K extends ke
 
 const saveFunction = () => {
   chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-    setValue(items, 'general', 'debugMode', els.debugMode, els.debugMode.checked)
-      .then(i => setValue(i, 'general', 'preferredTitle', els.preferredTitle, els.preferredTitle.value))
-      .then(i => setValue(i, 'general', 'bgUrl', els.bgUrl, els.bgUrl.value))
-      .then(i => setValue(i, 'general', 'accentColor', els.accentColor, els.accentColor.value))
-      .then(i => setValue(i, 'general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''))
-      .then(i => setValue(i, 'general', 'animationSpeed', els.animationSpeed, els.animationSpeed.value ? parseFloat(els.animationSpeed.value) : items.general.animationSpeed))
-      .then(i => setValue(i, 'general', 'accentColor', els.animationSpeed, els.animationSpeed.value))
-      .then(i => setValue(i, 'mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type))
-      .then(i => setValue(i, 'mainText', 'font', els.font, els.font.value))
-      .then(i => setValue(i, 'mainText', 'customText', els.customText, els.customText.value))
-      .then(i => setValue(i, 'mainText', 'militaryTime', els.militaryTime, els.militaryTime.checked))
-      .then(i => setValue(i, 'mainText', 'includeSeconds', els.includeSeconds, els.includeSeconds.checked))
-      .then(i => setValue(i, 'searchBar', 'searchEngine', els.searchEngine, els.searchEngine.value as typeof globalThis.settings.searchBar.searchEngine))
-      .then(i => setValue(i, 'searchBar', 'searchPlaceHolder', els.searchPlaceHolder, els.searchPlaceHolder.value))
-      .then(i =>
-        setValue(
-          i,
-          'searchBar',
-          'searchPlaceHolderAlignment',
-          els.searchPlaceHolderAlignment,
-          els.searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment
-        )
-      )
-      .then(i => setValue(i, 'searchBar', 'showIcon', els.showIcon, els.showIcon.checked))
-      .then(i =>
-        setValue(i, 'bookmarksWidget', 'bookmarkRows', els.bookmarkRows, els.bookmarkRows.value ? parseInt(els.bookmarkRows.value) : items.bookmarksWidget.bookmarkRows)
-      )
-      .then(i => setValue(i, 'weatherWidget', 'degreeType', els.degreeType, els.degreeType.value as typeof globalThis.settings.weatherWidget.degreeType))
-      .then(i => setValue(i, 'weatherWidget', 'latitude', els.latitude, els.latitude.value))
-      .then(i => setValue(i, 'weatherWidget', 'longitude', els.longitude, els.longitude.value));
+    const settings: [keyof typeof globalThis.settings, string, HTMLInputElement, any][] = [
+      ['general', 'debugMode', els.debugMode, els.debugMode.checked],
+      ['general', 'preferredTitle', els.preferredTitle, els.preferredTitle.value],
+      ['general', 'bgUrl', els.bgUrl, els.bgUrl.value],
+      ['general', 'accentColor', els.accentColor, els.accentColor.value],
+      ['general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''],
+      ['general', 'animationSpeed', els.animationSpeed, els.animationSpeed.value ? parseFloat(els.animationSpeed.value) : items.general.animationSpeed],
+      ['general', 'accentColor', els.animationSpeed, els.animationSpeed.value],
+      ['mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type],
+      ['mainText', 'font', els.font, els.font.value],
+      ['mainText', 'customText', els.customText, els.customText.value],
+      ['mainText', 'militaryTime', els.militaryTime, els.militaryTime.checked],
+      ['mainText', 'includeSeconds', els.includeSeconds, els.includeSeconds.checked],
+      ['searchBar', 'searchEngine', els.searchEngine, els.searchEngine.value as typeof globalThis.settings.searchBar.searchEngine],
+      ['searchBar', 'searchPlaceHolder', els.searchPlaceHolder, els.searchPlaceHolder.value],
+      [
+        'searchBar',
+        'searchPlaceHolderAlignment',
+        els.searchPlaceHolderAlignment,
+        els.searchPlaceHolderAlignment.value as typeof globalThis.settings.searchBar.searchPlaceHolderAlignment
+      ],
+      ['searchBar', 'showIcon', els.showIcon, els.showIcon.checked],
+      ['bookmarksWidget', 'bookmarkRows', els.bookmarkRows, els.bookmarkRows.value ? parseInt(els.bookmarkRows.value) : items.bookmarksWidget.bookmarkRows],
+      ['weatherWidget', 'degreeType', els.degreeType, els.degreeType.value as typeof globalThis.settings.weatherWidget.degreeType],
+      ['weatherWidget', 'latitude', els.latitude, els.latitude.value],
+      ['weatherWidget', 'longitude', els.longitude, els.longitude.value]
+    ];
+
+    let chain = Promise.resolve(items);
+
+    settings.forEach(([section, key, element, value]) => {
+      chain = chain.then(i => setValue<typeof section, never>(i, section, key as never, element, value as never));
+    });
 
     alert('options saved');
   });
@@ -313,7 +324,7 @@ const importFunction = () => {
   const pattern = `NEW_TAB_X_SAVE_FORMAT_V${chrome.runtime.getManifest().version}_`;
 
   if (!dataToImport.startsWith(pattern)) {
-    alert(`incorrect save version (use v${chrome.runtime.getManifest().version})`);
+    alert(`incorrect save version (use NEW_TAB_X_SAVE_FORMAT_V${chrome.runtime.getManifest().version})`);
     return;
   }
   const data: typeof globalThis.settings = JSON.parse(decodeURIComponent(escape(window.atob(dataToImport.replace(pattern, '')))));
@@ -352,6 +363,13 @@ const importFunction = () => {
 const importBtn = document.getElementById('import') as HTMLButtonElement;
 importBtn.onclick = () => importFunction();
 
+const ePreventDefault = (cb: () => any) => {
+  return function (e: any) {
+    e.preventDefault();
+    cb();
+  };
+};
+
 document.onkeydown = e => {
   e = e || window.event;
 
@@ -361,26 +379,11 @@ document.onkeydown = e => {
   // e - export
   // i - import
 
-  if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-    e.preventDefault();
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    e.preventDefault();
-    saveFunction();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
-    e.preventDefault();
-    exportFunction();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
-    e.preventDefault();
-    importFunction();
-  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'u') ePreventDefault(() => window.scrollTo({ top: 0, behavior: 'smooth' }))(e);
+  if ((e.ctrlKey || e.metaKey) && e.key === 'd') ePreventDefault(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }))(e);
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') ePreventDefault(() => saveFunction())(e);
+  if ((e.ctrlKey || e.metaKey) && e.key === 'e') ePreventDefault(() => exportFunction())(e);
+  if ((e.ctrlKey || e.metaKey) && e.key === 'i') ePreventDefault(() => importFunction())(e);
 };
 
 const hiddenElements = document.querySelectorAll('.hidden-text');

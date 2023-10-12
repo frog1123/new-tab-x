@@ -384,25 +384,24 @@ p {
 }
 
 .bg-container {
-  display: grid;
-  place-items: center;
-  width: inherit;
-  grid-auto-flow: column;
-  gap: 6px;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  width: 100% !important;
   box-sizing: border-box !important;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  gap: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 
-  @media screen and (max-width: 650px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-flow: row;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
   & div {
+    flex: 0 0 auto;
+    width: calc(25% - 10px - 4px + 2px);
     overflow: hidden;
     border-radius: 10px;
-    border: solid #00000000;
+    border: 4px solid gray;
     cursor: pointer;
     display: grid;
     place-items: center;
@@ -510,6 +509,21 @@ input:checked + .slider {
 
 input:focus + .slider {
   box-shadow: 0 0 1px #6fedd6;
+}
+
+.sm-info {
+  display: flex;
+
+  & img {
+    margin-top: 0.2em;
+    width: 1em;
+    height: 1em;
+  }
+
+  & p {
+    margin: 0;
+    font-size: 12px;
+  }
 }
 
 .hidden-text {
