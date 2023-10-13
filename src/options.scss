@@ -109,6 +109,10 @@ p {
       font-size: 24px;
     }
   }
+
+  @media screen and (max-width: 650px) {
+    font-size: 32px;
+  }
 }
 
 .float-animation {
@@ -398,13 +402,15 @@ p {
 
   & div {
     flex: 0 0 auto;
-    width: calc(25% - 10px - 4px + 2px);
+    // width: calc(25% - 10px - 8px + 2px);
+    width: calc(25% - 8px);
     overflow: hidden;
     border-radius: 10px;
-    border: 4px solid gray;
+    border: 4px solid #fff;
     cursor: pointer;
     display: grid;
     place-items: center;
+    box-sizing: border-box !important;
 
     & img {
       width: 100%;
@@ -512,10 +518,11 @@ input:focus + .slider {
 }
 
 .sm-info {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  place-items: center;
 
   & img {
-    margin-top: 0.2em;
     width: 1em;
     height: 1em;
   }

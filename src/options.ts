@@ -37,8 +37,91 @@ globalThis.settings = {
 
 let els: { [key: string]: HTMLInputElement };
 
+const body = document.querySelector('body');
+
+body!.innerHTML = `${body!.innerHTML}
+<main id="main">
+  <img id="logo" class="float-animation" src="logo.svg" />
+  <h1 id="title-text" class="hidden-text">new tab <span>x</span></h1>
+  <div id="hotkeys-info-container">
+    <div id="hotkeys-info">
+      <div class="hotkey-info hidden-side-text" style="transition-delay: 0ms;">
+        <div>
+          <img src="up_arrow_gray.svg" />
+          <p>U</p>
+        </div>
+        <p>top</p>
+      </div>
+      <div class="hotkey-info hidden-side-text" style="transition-delay: 50ms;">
+        <div>
+          <img src="up_arrow_gray.svg" />
+          <p>D</p>
+        </div>
+        <p>bottom</p>
+      </div>
+      <div class="hotkey-info hidden-side-text" style="transition-delay: 100ms;">
+        <div>
+          <img src="up_arrow_gray.svg" />
+          <p>S</p>
+        </div>
+        <p>save</p>
+      </div>
+      <div class="hotkey-info hidden-side-text" style="transition-delay: 150ms;">
+        <div>
+          <img src="up_arrow_gray.svg" />
+          <p>E</p>
+        </div>
+        <p>export</p>
+      </div>
+      <div class="hotkey-info hidden-side-text" style="transition-delay: 200ms;">
+        <div>
+          <img src="up_arrow_gray.svg" />
+          <p>I</p>
+        </div>
+        <p>import</p>
+      </div>
+    </div>
+  </div>
+  <div id="hotkeys-note">
+    <img src="up_arrow_gray.svg" />
+    <p>CTRL + key</p>
+  </div>
+  <p class="title-p hidden-text">general</p>
+  <div class="line"></div>
+  <div id="general-container" class="container"></div>
+  <p class="title-p hidden-text">main text</p>
+  <div class="line"></div>
+  <div id="main-text-container" class="container"></div>
+  <p class="title-p hidden-text">search bar</p>
+  <div class="line"></div>
+  <div id="search-bar-container" class="container"></div>
+  
+  <p class="title-p hidden-text">bookmarks widget</p>
+  <div class="line"></div>
+  <div id="bookmarks-widget-container" class="container"></div>
+  
+  <p class="title-p hidden-text">weather widget</p>
+  <div class="line"></div>
+  <div id="weather-widget-container" class="container"></div>
+  <div id="btns-container">
+    <button id="save">
+      <p>save</p>
+    </button>
+    <button id="export">
+      <p>export</p>
+    </button>
+    <button id="import">
+      <p>import</p>
+    </button>
+  </div>
+</main>`;
+
 chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items => {
-  console.log(items);
+  const html = document.querySelector('html') as HTMLElement;
+  html.setAttribute('extension-id', chrome.runtime.id);
+  html.setAttribute('extension-version', chrome.runtime.getManifest().version);
+
+  // console.log(items);
 
   const generalContainer = document.getElementById('general-container') as HTMLDivElement;
   generalContainer.innerHTML = `${generalContainer.innerHTML}
@@ -85,26 +168,25 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     </div>
   `;
 
-  const other = ['bg-opt1', 'bg-opt2', 'bg-opt3', 'bg-opt4'];
+  const other = ['bg-opt1', 'bg-opt2', 'bg-opt3', 'bg-opt4', 'bg-opt5'];
 
   const setBg = (id: string) => {
     const el = document.getElementById(id) as HTMLDivElement;
-    other.forEach(el => (document.getElementById(el)!.style.border = '4px solid gray'));
+    other.forEach(el => (document.getElementById(el)!.style.border = '4px solid #fff'));
     const bgSrc = (document.querySelector(`#${id} img`) as HTMLImageElement)!.src;
 
     (document.getElementById('bgUrl') as HTMLInputElement)!.value = bgSrc;
     el.style.border = '4px solid #6fedd6';
   };
 
-  document.getElementById('bg-opt1')!.onclick = () => setBg('bg-opt1');
-  document.getElementById('bg-opt2')!.onclick = () => setBg('bg-opt2');
-  document.getElementById('bg-opt3')!.onclick = () => setBg('bg-opt3');
-  document.getElementById('bg-opt4')!.onclick = () => setBg('bg-opt4');
-  document.getElementById('bg-opt5')!.onclick = () => setBg('bg-opt5');
+  other.forEach(id => {
+    const el = document.getElementById(id) as HTMLDivElement;
+    el.onclick = () => setBg(id);
+  });
 
   other.forEach(el => {
     const bgSrc = (document.querySelector(`#${el} img`) as HTMLImageElement)!.src;
-    if (items.general.bgUrl === bgSrc) (document.getElementById(el) as HTMLDivElement).style.border = 'solid #6fedd6';
+    if (items.general.bgUrl === bgSrc) (document.getElementById(el) as HTMLDivElement).style.border = '4px solid #6fedd6';
   });
 
   const mainTextContainer = document.getElementById('main-text-container') as HTMLDivElement;

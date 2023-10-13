@@ -154,7 +154,7 @@ input:checked + .slider:before {
     display: grid;
     grid-template-columns: max-content auto;
     place-items: center;
-    color: white;
+    color: #fff;
 
     & div {
       display: grid;
