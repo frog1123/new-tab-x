@@ -148,6 +148,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
         <div id="bg-opt3"><img src="bg-3.png"></div>
         <div id="bg-opt4"><img src="bg-4.png"></div>
         <div id="bg-opt5"><img src="bg-5.png"></div>
+        <div id="bg-opt6"><img src="bg-6.png"></div>
       </div>
       <div class="input-container-large">
         <p>background url</p>
@@ -168,7 +169,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     </div>
   `;
 
-  const other = ['bg-opt1', 'bg-opt2', 'bg-opt3', 'bg-opt4', 'bg-opt5'];
+  const other = Array.from(document.querySelectorAll('[id^="bg-opt"]')).map(el => el.id);
 
   const setBg = (id: string) => {
     const el = document.getElementById(id) as HTMLDivElement;
