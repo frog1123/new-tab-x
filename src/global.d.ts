@@ -6,13 +6,17 @@ declare global {
       bgUrl: string;
       accentColor: string;
       highlightColor: string;
+      uiColor: string;
+      uiBorderColor: string;
       order: (string | [string, string])[];
       animationSpeed: number;
+      animationType: 'up' | 'down';
     };
     mainText: {
       type: 'time' | 'date' | 'custom';
       customText: string;
       font: string;
+      mainTextColor: string;
       militaryTime: boolean;
       includeSeconds: boolean;
     };

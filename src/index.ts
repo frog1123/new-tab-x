@@ -2,16 +2,20 @@ globalThis.settings = {
   general: {
     debugMode: false,
     preferredTitle: 'new tab x',
-    bgUrl: `chrome-extension://${chrome.runtime.id}/bg-1.png`,
+    bgUrl: `chrome-extension://${chrome.runtime.id}/bg-5.png`,
     accentColor: '#8898de',
     highlightColor: '#6fedd680',
+    uiColor: '#ffffff20',
+    uiBorderColor: '#ffffff30',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
-    animationSpeed: 1
+    animationSpeed: 1,
+    animationType: 'down'
   },
   mainText: {
     type: 'time',
     customText: 'custom text',
-    font: 'Monaco, monospace',
+    font: `'Orbitron', monospace'`,
+    mainTextColor: '#fff',
     militaryTime: true,
     includeSeconds: false
   },
@@ -38,6 +42,13 @@ globalThis.settings = {
 chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async items => {
   inital(items);
 
+  const animationTypes = {
+    up: 'hidden-el-up',
+    down: 'hidden-el-down'
+  };
+
+  const animationType = animationTypes[items.general.animationType];
+
   const container = document.getElementById('container') as HTMLDivElement;
   items.general.order.forEach((type: string | [string, string], index: number) => {
     const delay = index * 50 * items.general.animationSpeed + 'ms';
@@ -50,7 +61,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
         switch (type) {
           case 'notes': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="notes" class="double-child hidden-el" style="transition-delay: ${delay};">
+            <div id="notes" class="double-child ${animationType}" style="transition-delay: ${delay};">
               <p>Notes</p>
               <textarea id="notes-input">${items.notesWidget.notesValue}</textarea>
             </div>`;
@@ -59,7 +70,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
           }
           case 'weather': {
             dContainer!.innerHTML = `${dContainer!.innerHTML}
-            <div id="weather" class="double-child hidden-el" style="transition-delay: ${delay};">
+            <div id="weather" class="double-child ${animationType}" style="transition-delay: ${delay};">
               <div id="weather-info">
                 <p id="weather-info-location">...</p>
                 <p>(${items.weatherWidget.degreeType}°)</p>
@@ -77,7 +88,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
     }
     switch (type) {
       case 'main': {
-        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="hidden-el" style="transition-delay: ${delay};">...</h1>`;
+        container.innerHTML = `${container.innerHTML}<h1 id="main-text" class="${animationType}" style="transition-delay: ${delay}; color: ${items.mainText.mainTextColor}">...</h1>`;
         (document.getElementById('main-text') as HTMLElement).style.fontFamily = items.mainText.font;
 
         runClock(items);
@@ -95,7 +106,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
         }
 
         container.innerHTML = `${container.innerHTML}
-        <div id="search-container" class="hidden-el" ${
+        <div id="search-container" class="${animationType}" ${
           items.searchBar.showIcon
             ? `style="
             grid-template-columns: max-content auto;
@@ -103,14 +114,16 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, async i
             : `style="transition-delay: ${delay};"`
         }>
           ${items.searchBar.showIcon ? `<img src="${items.searchBar.searchEngine}.png" />` : ''}
-          <input id="search" placeholder="${!items.searchBar.searchPlaceHolder ? '' : items.searchBar.searchPlaceHolder}" autocomplete="off" style="text-align: ${alignType};">
+          <input id="search" placeholder="${
+            !items.searchBar.searchPlaceHolder ? '' : items.searchBar.searchPlaceHolder
+          }" autocomplete="off" spellcheck="false" style="text-align: ${alignType};">
         </div>`;
 
         break;
       }
       case 'bookmarks': {
         container.innerHTML = `${container.innerHTML}
-        <div id="bookmarks-container" class="hidden-el" style="transition-delay: ${delay};">
+        <div id="bookmarks-container" class="${animationType}" style="transition-delay: ${delay};">
           <div id="bookmarks-info">
             <div> 
               <p>Bookmarks |&nbsp;</p>

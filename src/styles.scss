@@ -29,7 +29,6 @@
   width: 100%;
   text-align: center;
   font-size: 36px;
-  color: #fff;
 
   @media screen and (max-width: 600px) {
     font-size: 28px;
@@ -204,6 +203,10 @@ input:checked + .slider:before {
         display: none;
       }
     }
+
+    @media screen and (max-width: 650px) {
+      gap: 2px;
+    }
   }
 }
 
@@ -220,6 +223,8 @@ input:checked + .slider:before {
 
   @media screen and (max-width: 600px) {
     grid-template-rows: 25px auto;
+    gap: 2px;
+    padding: 3px;
   }
 
   & img {

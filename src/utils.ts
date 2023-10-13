@@ -24,6 +24,9 @@ const inital = (items: typeof globalThis.settings) => {
   html.setAttribute('extension-id', chrome.runtime.id);
   html.setAttribute('extension-version', chrome.runtime.getManifest().version);
 
+  document.documentElement.style.setProperty('--ui-color', items.general.uiColor);
+  document.documentElement.style.setProperty('--ui-border-color', items.general.uiBorderColor);
+
   const style = document.createElement('style');
   style.type = 'text/css';
   style.innerHTML = `${style.innerHTML}input:checked + .slider { background-color: ${items.general.accentColor}; }`;
@@ -226,7 +229,8 @@ const weatherWidgetScript = (items: typeof globalThis.settings) => {
 };
 
 const fadeAnimation = () => {
-  const hiddenElements = document.querySelectorAll('.hidden-el');
+  const hiddenElUp = document.querySelectorAll('.hidden-el-up');
+  const hiddenElDown = document.querySelectorAll('.hidden-el-down');
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -235,5 +239,6 @@ const fadeAnimation = () => {
     });
   });
 
-  hiddenElements.forEach(el => observer.observe(el));
+  hiddenElUp.forEach(el => observer.observe(el));
+  hiddenElDown.forEach(el => observer.observe(el));
 };

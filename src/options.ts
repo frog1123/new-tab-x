@@ -2,16 +2,20 @@ globalThis.settings = {
   general: {
     debugMode: false,
     preferredTitle: 'new tab x',
-    bgUrl: `chrome-extension://${chrome.runtime.id}/bg-1.png`,
+    bgUrl: `chrome-extension://${chrome.runtime.id}/bg-5.png`,
     accentColor: '#8898de',
     highlightColor: '#6fedd680',
+    uiColor: '#ffffff20',
+    uiBorderColor: '#ffffff30',
     order: ['main', 'search', 'bookmarks', ['notes', 'weather']],
-    animationSpeed: 1
+    animationSpeed: 1,
+    animationType: 'down'
   },
   mainText: {
     type: 'time',
     customText: 'custom text',
     font: `'Orbitron', monospace'`,
+    mainTextColor: '#fff',
     militaryTime: true,
     includeSeconds: false
   },
@@ -35,9 +39,8 @@ globalThis.settings = {
   }
 };
 
-let els: { [key: string]: HTMLInputElement };
-
 const body = document.querySelector('body');
+let els: { [key: string]: HTMLInputElement };
 
 body!.innerHTML = `${body!.innerHTML}
 <main id="main">
@@ -121,7 +124,7 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
   html.setAttribute('extension-id', chrome.runtime.id);
   html.setAttribute('extension-version', chrome.runtime.getManifest().version);
 
-  // console.log(items);
+  if (items.general.debugMode) console.log(items);
 
   const generalContainer = document.getElementById('general-container') as HTMLDivElement;
   generalContainer.innerHTML = `${generalContainer.innerHTML}
@@ -158,6 +161,18 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
         <p>accent color</p>
         <input id="accentColor" placeholder="${items.general.accentColor}">
       </div>
+      <div class="input-container">
+        <p>highlight color</p>
+        <input id="highlightColor" placeholder="${items.general.highlightColor}">
+      </div>
+      <div class="input-container">
+        <p>ui color</p>
+        <input id="uiColor" placeholder="${items.general.uiColor}">
+      </div>
+      <div class="input-container">
+        <p>ui border color</p>
+        <input id="uiBorderColor" placeholder="${items.general.uiBorderColor}">
+      </div>
       <div class="input-container-large">
         <p>order</p>
         <input id="order" placeholder="${JSON.stringify(items.general.order).replace(/"/g, '&quot;')}">
@@ -165,6 +180,10 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
       <div class="input-container">
         <p>animation speed</p>
         <input id="animationSpeed" placeholder="${items.general.animationSpeed}">
+      </div>
+      <div class="input-container">
+        <p>animation type</p>
+        <input id="animationType" placeholder="${items.general.animationType}">
       </div>
     </div>
   `;
@@ -198,12 +217,16 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
         <input id="type" placeholder="${items.mainText.type}">
       </div>
       <div class="input-container-large">
+        <p>custom text</p>
+        <input id="customText" placeholder="${items.mainText.customText}">
+      </div>
+      <div class="input-container-large">
         <p>font</p>
         <input id="font" placeholder="${items.mainText.font}">
       </div>
-      <div class="input-container-large">
-        <p>custom text</p>
-        <input id="customText" placeholder="${items.mainText.customText}">
+      <div class="input-container">
+        <p>main text color</p>
+        <input id="mainTextColor" placeholder="${items.mainText.mainTextColor}">
       </div>
       <div class="input-container-toggle">
         <p>military time</p>
@@ -281,12 +304,17 @@ chrome.storage.sync.get<typeof globalThis.settings>(globalThis.settings, items =
     preferredTitle: document.getElementById('preferredTitle') as HTMLInputElement,
     bgUrl: document.getElementById('bgUrl') as HTMLInputElement,
     accentColor: document.getElementById('accentColor') as HTMLInputElement,
-    animationSpeed: document.getElementById('animationSpeed') as HTMLInputElement,
+    highlightColor: document.getElementById('highlightColor') as HTMLInputElement,
+    uiColor: document.getElementById('uiColor') as HTMLInputElement,
+    uiBorderColor: document.getElementById('uiBorderColor') as HTMLInputElement,
     order: document.getElementById('order') as HTMLInputElement,
+    animationSpeed: document.getElementById('animationSpeed') as HTMLInputElement,
+    animationType: document.getElementById('animationType') as HTMLInputElement,
     // mainText
     type: document.getElementById('type') as HTMLInputElement,
-    font: document.getElementById('font') as HTMLInputElement,
     customText: document.getElementById('customText') as HTMLInputElement,
+    font: document.getElementById('font') as HTMLInputElement,
+    mainTextColor: document.getElementById('mainTextColor') as HTMLInputElement,
     militaryTime: document.getElementById('militaryTime') as HTMLInputElement,
     includeSeconds: document.getElementById('includeSeconds') as HTMLInputElement,
     // search
@@ -341,12 +369,16 @@ const saveFunction = () => {
       ['general', 'preferredTitle', els.preferredTitle, els.preferredTitle.value],
       ['general', 'bgUrl', els.bgUrl, els.bgUrl.value],
       ['general', 'accentColor', els.accentColor, els.accentColor.value],
+      ['general', 'highlightColor', els.highlightColor, els.highlightColor.value],
+      ['general', 'uiColor', els.uiColor, els.uiColor.value],
+      ['general', 'uiBorderColor', els.uiBorderColor, els.uiBorderColor.value],
       ['general', 'order', els.order, els.order.value ? JSON.parse(els.order.value.replace(/&quot;/g, '"')) : ''],
       ['general', 'animationSpeed', els.animationSpeed, els.animationSpeed.value ? parseFloat(els.animationSpeed.value) : items.general.animationSpeed],
-      ['general', 'accentColor', els.animationSpeed, els.animationSpeed.value],
+      ['general', 'animationType', els.animationType, els.animationType.value],
       ['mainText', 'type', els.type, els.type.value as typeof globalThis.settings.mainText.type],
-      ['mainText', 'font', els.font, els.font.value],
       ['mainText', 'customText', els.customText, els.customText.value],
+      ['mainText', 'font', els.font, els.font.value],
+      ['mainText', 'mainTextColor', els.mainTextColor, els.mainTextColor.value],
       ['mainText', 'militaryTime', els.militaryTime, els.militaryTime.checked],
       ['mainText', 'includeSeconds', els.includeSeconds, els.includeSeconds.checked],
       ['searchBar', 'searchEngine', els.searchEngine, els.searchEngine.value as typeof globalThis.settings.searchBar.searchEngine],
@@ -418,13 +450,18 @@ const importFunction = () => {
   setInputValue(els.preferredTitle, data.general.preferredTitle);
   setInputValue(els.bgUrl, data.general.bgUrl);
   setInputValue(els.accentColor, data.general.accentColor);
+  setInputValue(els.highlightColor, data.general.highlightColor);
+  setInputValue(els.uiColor, data.general.uiColor);
+  setInputValue(els.uiBorderColor, data.general.uiBorderColor);
   setInputValue(els.order, JSON.stringify(data.general.order));
   setInputValue(els.animationSpeed, data.general.animationSpeed);
+  setInputValue(els.animationType, data.general.animationType);
 
   // mainText
   setInputValue(els.type, data.mainText.type);
-  setInputValue(els.font, data.mainText.font);
   setInputValue(els.customText, data.mainText.customText);
+  setInputValue(els.font, data.mainText.font);
+  setInputValue(els.mainTextColor, data.mainText.mainTextColor);
   setInputValue(els.militaryTime, data.mainText.militaryTime);
   setInputValue(els.includeSeconds, data.mainText.includeSeconds);
 
