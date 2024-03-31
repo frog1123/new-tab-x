@@ -3,6 +3,8 @@
   <h1>new tab x</h1>
 </div>
 
+**new tab x is no longer mantained, please try out mtab: https://github.com/maxhu08/mtab**
+
 INSTALL HERE -> https://chrome.google.com/webstore/detail/new-tab-x/kfpldldbkgdbcbkihefdddeikpkbiccb
 
 <div align="center">
